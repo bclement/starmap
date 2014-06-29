@@ -1,0 +1,8 @@
+application: starmap
+version: 1
+runtime: go
+api_version: go1
+
+handlers:
+- url: /wms
+  script: _go_app

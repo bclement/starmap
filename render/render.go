@@ -1,7 +1,7 @@
 package render
 
 import (
-	"github.com/bclement/starmap/render/style"
+	"render/style"
 	"image"
 	"image/color"
 	"image/draw"

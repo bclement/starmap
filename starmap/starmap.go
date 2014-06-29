@@ -1,15 +1,21 @@
-package render
+package starmap
 
 import (
-	"render/style"
 	"image"
 	"image/color"
 	"image/png"
-	"os"
-	"testing"
+	"net/http"
+	"render"
+	"render/style"
 )
 
-func TestCreate(t *testing.T) {
+func init() {
+	/* handler() defined below */
+	http.HandleFunc("/", handler)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	/* simple test image output */
 	p0 := &image.Point{300, 150}
 	smallCircle := style.NewPointStyle(8, color.White, style.CIRCLE)
 	p1 := &image.Point{300, 75}
@@ -22,18 +28,13 @@ func TestCreate(t *testing.T) {
 	p5 := &image.Point{450, 150}
 	green := color.RGBA{0, 255, 0, 255}
 	largeSquare := style.NewPointStyle(100, green, style.SQUARE)
-	img := Create(600, 300, color.Black)
-	Render(img, p0, smallCircle)
-	Render(img, p1, smallSquare)
-	Render(img, p3, smallSquare)
-	Render(img, p4, largeCircle)
-	Render(img, p5, largeSquare)
-	f, err := os.OpenFile("/tmp/res.png", os.O_CREATE|os.O_WRONLY, 0664)
-	if err != nil {
-		t.Errorf("open %s", err)
-	}
-	defer f.Close()
-	if err = png.Encode(f, img); err != nil {
-		t.Error("encode %s", err)
+	img := render.Create(600, 300, color.Black)
+	render.Render(img, p0, smallCircle)
+	render.Render(img, p1, smallSquare)
+	render.Render(img, p3, smallSquare)
+	render.Render(img, p4, largeCircle)
+	render.Render(img, p5, largeSquare)
+	if err := png.Encode(w, img); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
