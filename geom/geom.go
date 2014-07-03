@@ -1,18 +1,9 @@
 package geom
 
 import (
-	"bytes"
 	"fmt"
 	"math"
 )
-
-/*
-base32Map := [32]rune{'0','1','2','3','4','5','6','7','8','9',
-                        'b','c','d','e','f','g','h'.'j','k','m',
-                        'n','p','q','r','s','t','u','v','w','x',
-                        'y','z'}
-*/
-const BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz"
 
 /* generic coordinate storage */
 type CoordinateSeq struct {
@@ -37,15 +28,6 @@ type Geometry interface {
 	Coords() *CoordinateSeq
 	/* return number of dimensions per coordinate */
 	Dims() int
-}
-
-/* interface for getting geohash strings */
-type GeoHasher interface {
-	/*
-	   takes in x and y offsets from center of grid to extents
-	   returns bounds as 40bit base32 geohash
-	*/
-	GeoHash(xcenter, ycenter, xoffset, yoffset float64) string
 }
 
 /* single coordinate point */
@@ -74,45 +56,28 @@ func (p *Point) Dims() int {
 	return len(p.c)
 }
 
-/* see GeoHasher interface */
-func (p *Point) GeoHash(xcenter, ycenter, xoffset, yoffset float64) string {
-	vals := make([]byte, 8)
-	var i byte = 0
-	for ; i < 20; i += 1 {
-		xGlobalIndex := i * 2
-		yGlobalIndex := xGlobalIndex + 1
-		xoffset /= 2
-		if p.c[0] >= xcenter {
-			setBit(xGlobalIndex, vals)
-			xcenter += xoffset
-		} else {
-			xcenter -= xoffset
-		}
-		yoffset /= 2
-		if p.c[1] >= ycenter {
-			setBit(yGlobalIndex, vals)
-			ycenter += yoffset
-		} else {
-			ycenter -= yoffset
-		}
-	}
-	var buffer bytes.Buffer
-	for i := 0; i < len(vals); i += 1 {
-		buffer.WriteByte(BASE32[vals[i]])
-	}
-	return buffer.String()
+/* access first dimension value */
+func (p *Point) X() float64 {
+	return p.c[0]
 }
 
-/*
-treats vals as a contiguous bit array where
-each byte in val holds 5 bits. Sets bit at
-globalIndex to 1
-*/
-func setBit(globalIndex byte, vals []byte) {
-	valIndex := globalIndex / 5
-	localIndex := globalIndex % 5
-	mask := byte(0x10 >> localIndex)
-	vals[valIndex] |= mask
+/* access second dimension value */
+func (p *Point) Y() float64 {
+	return p.c[1]
+}
+
+/* access third dimension value */
+func (p *Point) Z() float64 {
+	if len(p.c) < 3 {
+		return 0
+	} else {
+		return p.c[2]
+	}
+}
+
+/* see Stringer interface */
+func (p *Point) String() string {
+	return fmt.Sprintf("%v", p.c)
 }
 
 /* multi-point polygon */

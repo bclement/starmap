@@ -1,6 +1,7 @@
 package geom
 
 import (
+	"math"
 	"strings"
 	"testing"
 )
@@ -46,8 +47,20 @@ func TestBBoxPoly(t *testing.T) {
 func TestGeoHash(t *testing.T) {
 	/* example from http://en.wikipedia.org/wiki/Geohash */
 	p := NewPoint2D(-5.6, 42.6)
-	res := p.GeoHash(0, 0, 180, 90)
+	res := p.GeoHash(LONLAT)
 	if !strings.HasPrefix(res, "ezs42") {
 		t.Error("Didn't expect " + res)
+	}
+	latMargin := 0.000085
+	lonMargin := 0.00017
+	newP, err := UnHash(res, LONLAT)
+	if err != nil {
+		t.Error("Invalid geohash")
+	}
+	if math.Abs(newP.X()-(-5.6)) > lonMargin {
+		t.Errorf("Inavlid lon value: %v", newP.X())
+	}
+	if math.Abs(newP.Y()-42.6) > latMargin {
+		t.Errorf("Inavlid lat value: %v", newP.Y())
 	}
 }
