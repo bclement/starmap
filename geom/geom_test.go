@@ -64,3 +64,24 @@ func TestGeoHash(t *testing.T) {
 		t.Errorf("Inavlid lat value: %v", newP.Y())
 	}
 }
+
+func TestHashBBox(t *testing.T) {
+	lower := NewPoint2D(-180, -90)
+	upper0 := NewPoint2D(180, 90)
+	assertBbox(lower, upper0, "0", "~", t)
+	upper1 := NewPoint2D(0, 0)
+	assertBbox(lower, upper1, "0", "8", t)
+	upper2 := NewPoint2D(-90, 0)
+	assertBbox(lower, upper2, "0", "4", t)
+	upper3 := NewPoint2D(-135, -45)
+	assertBbox(lower, upper3, "00", "0~", t)
+	upper4 := NewPoint2D(-180, -90)
+	assertBbox(lower, upper4, "00000000", "00000000", t)
+}
+
+func assertBbox(lower, upper *Point, expMin, expMax string, t *testing.T) {
+	min, max := BBoxHash(lower, upper, LONLAT)
+	if min != expMin || max != expMax {
+		t.Errorf("Expected %v, %v, got %v %v", expMin, expMax, min, max)
+	}
+}

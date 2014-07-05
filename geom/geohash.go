@@ -124,3 +124,65 @@ func isSet(globalIndex byte, vals []byte) bool {
 	mask := byte(0x10 >> localIndex)
 	return (vals[valIndex] & mask) != 0
 }
+
+/*
+takes in bounding box and grid definition
+returns lower and upper geohash query strings
+NOTE: query strings may contain non-base32 characters
+*/
+func BBoxHash(lower, upper *Point, gd *GridDef) (string, string) {
+	/* copy since we change them in the loop */
+	xcenter := gd.xcenter
+	ycenter := gd.ycenter
+	xoffset := gd.xoffset
+	yoffset := gd.yoffset
+	/* holds the min geohash prefix */
+	var minbuff bytes.Buffer
+	/* replaces last byte in lower to create max prefix */
+	var maxbyte byte
+	done := false
+	/* maxes out at 8 character geohash */
+	for i := 0; !done && i < 8; i += 1 {
+		var curr byte = 0
+		var j byte = 0
+		/* walk through each 5bit hash character */
+		for ; j < 5; j += 1 {
+			if j%2 == 0 {
+				xoffset /= 2
+				if lower.X() <= xcenter && upper.X() <= xcenter {
+					xcenter -= xoffset
+				} else if lower.X() >= xcenter && upper.X() >= xcenter {
+					curr |= 0x10 >> j
+					xcenter += xoffset
+				} else {
+					done = true
+				}
+			} else {
+				yoffset /= 2
+				if lower.Y() <= ycenter && upper.Y() <= ycenter {
+					ycenter -= yoffset
+				} else if lower.Y() >= ycenter && upper.Y() >= ycenter {
+					curr |= 0x10 >> j
+					ycenter += yoffset
+				} else {
+					done = true
+				}
+			}
+			if done {
+				/* this includes all other characters under this bit prefix */
+				maxbyte = curr + (0x20 >> j)
+				break
+			}
+		}
+		minbuff.WriteByte(BASE32[curr])
+	}
+	minhash := minbuff.String()
+	minbuff.Truncate(minbuff.Len() - 1)
+	if maxbyte < 32 {
+		minbuff.WriteByte(BASE32[maxbyte])
+	} else {
+		/* tilde used as max value when we walk off base32 */
+		minbuff.WriteByte(0x7e)
+	}
+	return minhash, minbuff.String()
+}
