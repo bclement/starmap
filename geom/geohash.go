@@ -15,10 +15,12 @@ type GridDef struct {
 	/* offset is distance from center to grid boundary */
 	xoffset float64
 	yoffset float64
+    xIncreasesRight bool
+    yIncreasesUp bool
 }
 
-var LONLAT *GridDef = &GridDef{0, 0, 180, 90}
-var STELLAR *GridDef = &GridDef{12, 0, 12, 90}
+var LONLAT *GridDef = &GridDef{0, 0, 180, 90, true, true}
+var STELLAR *GridDef = &GridDef{12, 0, 12, 90, false, true}
 
 /* interface for getting geohash strings */
 type GeoHasher interface {

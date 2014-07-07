@@ -2,6 +2,7 @@ package geom
 
 import (
 	"math"
+    "image"
 	"strings"
 	"testing"
 )
@@ -84,4 +85,26 @@ func assertBbox(lower, upper *Point, expMin, expMax string, t *testing.T) {
 	if min != expMin || max != expMax {
 		t.Errorf("Expected %v, %v, got %v %v", expMin, expMax, min, max)
 	}
+}
+
+func TestTransform(t *testing.T) {
+    min := NewPoint2D(-90, -30)
+    max := NewPoint2D(90, 30)
+    trans := CreateTransform(min, max, 90, 30, LONLAT)
+    p0 := NewPoint2D(-90, -30)
+    assertTrans(trans.Transform(p0), &image.Point{0, 30}, t)
+    p1 := NewPoint2D(-45, -15)
+    assertTrans(trans.Transform(p1), &image.Point{22, 22}, t)
+    p2 := NewPoint2D(0, 0)
+    assertTrans(trans.Transform(p2), &image.Point{45,15}, t)
+    p3 := NewPoint2D(45, 15)
+    assertTrans(trans.Transform(p3), &image.Point{67, 7}, t)
+    p4 := NewPoint2D(90, 30)
+    assertTrans(trans.Transform(p4), &image.Point{90, 0}, t)
+}
+
+func assertTrans(res, exp *image.Point, t *testing.T) {
+    if res.X != exp.X || res.Y != exp.Y {
+        t.Errorf("Expected %v, %v. Got %v, %v", exp.X, exp.Y, res.X, res.Y)
+    }
 }
