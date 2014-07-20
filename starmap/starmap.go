@@ -45,7 +45,7 @@ func decToGrid(dec float64) int {
 }
 
 func loadData(c appengine.Context) error {
-    f, err := os.Open("data/stars.csv")
+    f, err := os.Open("data/bright.tsv")
     if err != nil {
         return err
     }
@@ -106,17 +106,15 @@ func doErr(w http.ResponseWriter, err error) {
 
 func handler(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
-    /*
     q := datastore.NewQuery(StarType)
     count, err := q.Count(c)
-    if count < 30000 {
+    if count < 1000 {
         err = loadData(c)
         if err != nil {
             doErr(w, err)
             return
         }
     }
-    */
 	smlCircle := style.NewPointStyle(1, color.White, style.CIRCLE)
 	midCircle := style.NewPointStyle(2, color.White, style.CIRCLE)
 	lrgCircle1 := style.NewPointStyle(3, color.White, style.CIRCLE)
@@ -127,11 +125,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
     lowerHash, upperHash := geom.BBoxHash(min, max, geom.STELLAR)
     trans := geom.CreateTransform(min, max, width, height, geom.STELLAR)
 	img := render.Create(width, height, color.Black)
-    q := datastore.NewQuery(StarType).
+    q = datastore.NewQuery(StarType).
         Filter("GeoHash >=", lowerHash).Filter("GeoHash <", upperHash)
     for t:= q.Run(c); ; {
         var s Star
-        _, err := t.Next(&s)
+        _, err = t.Next(&s)
         if err == datastore.Done {
             break
         }
@@ -154,7 +152,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
             render.Render(img, pix, smlCircle)
         }
     }
-    if err := png.Encode(w, img); err != nil {
+    if err = png.Encode(w, img); err != nil {
         doErr(w, err)
 	}
 }
