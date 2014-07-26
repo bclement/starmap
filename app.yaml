@@ -7,5 +7,8 @@ handlers:
 - url: /wms
   script: _go_app
 
+- url: /
+  static_dir: web
+
 builtins:
 - remote_api: on
