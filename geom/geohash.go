@@ -179,13 +179,15 @@ func BBoxHash(lower, upper *Point, gd *GridDef) (string, string) {
 	/* replaces last byte in lower to create max prefix */
 	var maxbyte byte
 	done := false
+    var i byte
 	/* maxes out at 8 character geohash */
-	for i := 0; !done && i < 8; i += 1 {
+	for i = 0; !done && i < 8; i += 1 {
 		var curr byte = 0
 		var j byte = 0
 		/* walk through each 5bit hash character */
 		for ; j < 5; j += 1 {
-			if j%2 == 0 {
+            globalIndex := (i * 5) + j
+			if globalIndex % 2 == 0 {
 				xoffset /= 2
 				if lowerx <= xcenter && upperx <= xcenter {
 					xcenter -= xoffset
