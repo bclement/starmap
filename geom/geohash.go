@@ -39,19 +39,29 @@ func (p *Point) GeoHash(gd *GridDef) string {
 	xoffset := gd.xoffset
 	yoffset := gd.yoffset
 	vals := make([]byte, 8)
+    px := p.c[0]
+    if !gd.xIncreasesRight {
+        xcenter = -xcenter
+        px = -px
+    }
+    py := p.c[1]
+    if !gd.yIncreasesUp {
+        ycenter = -ycenter
+        py = -py
+    }
 	var i byte = 0
 	for ; i < 20; i += 1 {
 		xGlobalIndex := i * 2
 		yGlobalIndex := xGlobalIndex + 1
 		xoffset /= 2
-		if p.c[0] >= xcenter {
+		if px >= xcenter {
 			setBit(xGlobalIndex, vals)
 			xcenter += xoffset
 		} else {
 			xcenter -= xoffset
 		}
 		yoffset /= 2
-		if p.c[1] >= ycenter {
+		if py >= ycenter {
 			setBit(yGlobalIndex, vals)
 			ycenter += yoffset
 		} else {
@@ -82,6 +92,14 @@ takes in geohash string and grid definition
 returns 2D point or error if geohash is invalid
 */
 func UnHash(hash string, gd *GridDef) (*Point, error) {
+    xinc := isSet
+    if !gd.xIncreasesRight {
+        xinc = isUnset
+    }
+    yinc := isSet
+    if !gd.yIncreasesUp {
+        yinc = isUnset
+    }
 	/* copy since we change them in the loop */
 	xcenter := gd.xcenter
 	ycenter := gd.ycenter
@@ -100,19 +118,23 @@ func UnHash(hash string, gd *GridDef) (*Point, error) {
 		xGlobalIndex := i * 2
 		yGlobalIndex := xGlobalIndex + 1
 		xoffset /= 2
-		if isSet(xGlobalIndex, vals) {
+		if xinc(xGlobalIndex, vals) {
 			xcenter += xoffset
 		} else {
 			xcenter -= xoffset
 		}
 		yoffset /= 2
-		if isSet(yGlobalIndex, vals) {
+		if yinc(yGlobalIndex, vals) {
 			ycenter += yoffset
 		} else {
 			ycenter -= yoffset
 		}
 	}
 	return NewPoint2D(xcenter, ycenter), nil
+}
+
+func isUnset(globalIndex byte, vals []byte) bool {
+    return !isSet(globalIndex, vals)
 }
 
 /*
@@ -138,6 +160,20 @@ func BBoxHash(lower, upper *Point, gd *GridDef) (string, string) {
 	ycenter := gd.ycenter
 	xoffset := gd.xoffset
 	yoffset := gd.yoffset
+    lowerx := lower.X()
+    lowery := lower.Y()
+    upperx := upper.X()
+    uppery := upper.Y()
+    if !gd.xIncreasesRight {
+        xcenter = -xcenter
+        lowerx = -lowerx
+        upperx = -upperx
+    }
+    if !gd.yIncreasesUp {
+        ycenter = -ycenter
+        lowery = -lowery
+        uppery = -uppery
+    }
 	/* holds the min geohash prefix */
 	var minbuff bytes.Buffer
 	/* replaces last byte in lower to create max prefix */
@@ -151,9 +187,9 @@ func BBoxHash(lower, upper *Point, gd *GridDef) (string, string) {
 		for ; j < 5; j += 1 {
 			if j%2 == 0 {
 				xoffset /= 2
-				if lower.X() <= xcenter && upper.X() <= xcenter {
+				if lowerx <= xcenter && upperx <= xcenter {
 					xcenter -= xoffset
-				} else if lower.X() >= xcenter && upper.X() >= xcenter {
+				} else if lowerx >= xcenter && upperx >= xcenter {
 					curr |= 0x10 >> j
 					xcenter += xoffset
 				} else {
@@ -161,9 +197,9 @@ func BBoxHash(lower, upper *Point, gd *GridDef) (string, string) {
 				}
 			} else {
 				yoffset /= 2
-				if lower.Y() <= ycenter && upper.Y() <= ycenter {
+				if lowery <= ycenter && uppery <= ycenter {
 					ycenter -= yoffset
-				} else if lower.Y() >= ycenter && upper.Y() >= ycenter {
+				} else if lowery >= ycenter && uppery >= ycenter {
 					curr |= 0x10 >> j
 					ycenter += yoffset
 				} else {

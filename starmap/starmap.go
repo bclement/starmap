@@ -60,21 +60,36 @@ func parseFloat(value string, defaultValue float64) float64 {
 /* parse bounding box url parameter
 return full bounds if parameter isn't present or is malformed */
 func parseBbox(key string, r *http.Request) (*geom.Point, *geom.Point) {
-    minx := 0.0
-    miny := -90.0
-    maxx := 24.0
-    maxy := 90.0
+    leftx := 24.0
+    lowery := -90.0
+    rightx:= 0.0
+    uppery := 90.0
     value := r.FormValue(key)
     if value != "" {
         parts := strings.Split(value, ",")
         if len(parts) == 4 {
-            minx = parseFloat(parts[0], minx)
-            miny = parseFloat(parts[1], miny)
-            maxx = parseFloat(parts[2], maxx)
-            maxy = parseFloat(parts[3], maxy)
+            x0 := parseFloat(parts[0], leftx)
+            y0 := parseFloat(parts[1], lowery)
+            x1 := parseFloat(parts[2], rightx)
+            y1 := parseFloat(parts[3], uppery)
+            /* in stellar coordinates, 24 is left of 0 */
+            if x0 > x1 {
+                leftx = x0
+                rightx = x1
+            } else {
+                leftx = x1
+                rightx = x0
+            }
+            if y0 > y1 {
+                lowery = y1
+                uppery = y0
+            } else {
+                lowery = y0
+                uppery = y1
+            }
         }
     }
-    return geom.NewPoint2D(minx, miny), geom.NewPoint2D(maxx, maxy)
+    return geom.NewPoint2D(leftx, lowery), geom.NewPoint2D(rightx, uppery)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -87,9 +102,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	lrgCircle1 := style.NewPointStyle(3, color.White, style.CIRCLE)
     width := intParam("WIDTH", 1024, r)
     height := intParam("HEIGHT", 512, r)
-    min, max := parseBbox("BBOX", r)
-    lowerHash, upperHash := geom.BBoxHash(min, max, geom.STELLAR)
-    trans := geom.CreateTransform(min, max, width, height, geom.STELLAR)
+    lower, upper := parseBbox("BBOX", r)
+    lowerHash, upperHash := geom.BBoxHash(lower, upper, geom.STELLAR)
+    trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
 	img := render.Create(width, height, color.Black)
     stars := data.Range(lowerHash, upperHash)
     for _, s := range(stars) {

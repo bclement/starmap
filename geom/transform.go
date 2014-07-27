@@ -16,15 +16,18 @@ type PointTransform struct {
 }
 
 /* 
-create transform object from min/max bounds, image dimensions
+create transform object from lower/upper bounds, image dimensions
 and grid definition
 */
-func CreateTransform(min, max *Point, width, height int,
+func CreateTransform(lowerLeft, upperRight *Point, width, height int,
         gd *GridDef) *PointTransform {
-    worldNx := max.X() - min.X()
-    worldNy := max.Y() - min.Y()
+    worldNx := math.Abs(lowerLeft.X() - upperRight.X())
+    worldNy := math.Abs(lowerLeft.Y() - upperRight.Y())
     dx := worldNx / float64(width)
     dy := worldNy / float64(height)
+    maxx := math.Max(lowerLeft.X(), upperRight.X())
+    maxy := math.Max(lowerLeft.Y(), upperRight.Y())
+    max := NewPoint2D(maxx, maxy)
     return &PointTransform{dx, dy, max, width, height, gd}
 }
 
