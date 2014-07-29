@@ -37,3 +37,25 @@ func TestCreate(t *testing.T) {
 		t.Error("encode %s", err)
 	}
 }
+
+func TestCircle(t *testing.T) {
+    img := Create(256, 256, color.Black)
+    for y:=0; y < 16; y+=1 {
+        for i := 0; i < 8; i+=1 {
+            size := float64(i+1)/2.0
+            alpha := uint8((16 * ( y + 1 )) - 1)
+            color := color.RGBA{alpha, alpha, alpha, 255}
+            circle := style.NewPointStyle(size, color, style.CIRCLE)
+            p := &image.Point{(25 * i) + 10, int(alpha)}
+            Render(img, p, circle)
+        }
+    }
+    f, err := os.OpenFile("/tmp/dots.png", os.O_CREATE|os.O_WRONLY, 0664)
+	if err != nil {
+		t.Errorf("open %s", err)
+	}
+	defer f.Close()
+	if err = png.Encode(f, img); err != nil {
+		t.Error("encode %s", err)
+	}
+}

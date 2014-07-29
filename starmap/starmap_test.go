@@ -9,9 +9,6 @@ func TestFilter(t *testing.T) {
     lower := geom.NewPoint2D(24, -90)
     upper := geom.NewPoint2D(22.5, -67.5)
     assertFilter(t, lower, upper, 10, "00", "08")
-    lower = geom.NewPoint2D(13.5, 0)
-    upper = geom.NewPoint2D(12, 22.5)
-    assertFilter(t, lower, upper, 0, "", "")
 }
 
 func assertFilter(t *testing.T, lower, upper *geom.Point, num int,

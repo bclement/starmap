@@ -97,9 +97,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
     if err != nil {
         doErr(w, err)
     }
-	smlCircle := style.NewPointStyle(1, color.White, style.CIRCLE)
-	midCircle := style.NewPointStyle(2, color.White, style.CIRCLE)
-	lrgCircle1 := style.NewPointStyle(3, color.White, style.CIRCLE)
+	smlCircle := style.NewPointStyle(0.5, color.White, style.CIRCLE)
+	midCircle := style.NewPointStyle(1, color.White, style.CIRCLE)
+	lrgCircle := style.NewPointStyle(2, color.White, style.CIRCLE)
+	superCircle := style.NewPointStyle(3, color.White, style.CIRCLE)
     width := intParam("WIDTH", 1024, r)
     height := intParam("HEIGHT", 512, r)
     lower, upper := parseBbox("BBOX", r)
@@ -115,13 +116,26 @@ func handler(w http.ResponseWriter, r *http.Request) {
         }
         pix := trans.Transform(coord)
         mag := s.Magnitude
-        if mag < 2 {
-	        render.Render(img, pix, lrgCircle1)
-        } else if mag < 3 {
-            render.Render(img, pix, midCircle)
-        } else if mag < 6 {
-            render.Render(img, pix, smlCircle)
+        style := smlCircle
+        var gray uint8
+        if mag < -1 {
+            style = superCircle
+            gray = 255
+        } else if mag < 0 {
+            style = superCircle
+            gray = 200
+        } else if mag < 2 {
+            style = lrgCircle
+            gray = uint8((2.0 - mag) * 64.0) + 128
+        } else if mag < 4 {
+            style = midCircle
+            gray = uint8((4.0 - mag) * 64.0) + 128
+        } else {
+            gray = uint8((6.0 - mag) * 64.0) + 128
         }
+        color := color.RGBA{ gray, gray, gray, 255}
+        style.Style.Color = color
+        render.Render(img, pix, style)
     }
     if err = png.Encode(w, img); err != nil {
         doErr(w, err)

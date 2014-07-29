@@ -13,7 +13,7 @@ const (
 /* generic style data */
 type Style struct {
     /* see specific style types for use */
-    Size int
+    Size float64
     Color color.Color
 }
 
@@ -28,7 +28,7 @@ type PointStyle struct {
 takes in the size of the radius of the point, color and shape
 returns a pointer to a newly created point style 
 */
-func NewPointStyle(size int, color color.Color, shape Shape) *PointStyle {
+func NewPointStyle(size float64, color color.Color, shape Shape) *PointStyle {
     s := Style{size, color}
     return &PointStyle{s, shape}
 }
