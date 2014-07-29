@@ -13,10 +13,10 @@ type GridDef struct {
 	xcenter float64
 	ycenter float64
 	/* offset is distance from center to grid boundary */
-	xoffset float64
-	yoffset float64
-    xIncreasesRight bool
-    yIncreasesUp bool
+	xoffset         float64
+	yoffset         float64
+	xIncreasesRight bool
+	yIncreasesUp    bool
 }
 
 var LONLAT *GridDef = &GridDef{0, 0, 180, 90, true, true}
@@ -39,16 +39,16 @@ func (p *Point) GeoHash(gd *GridDef) string {
 	xoffset := gd.xoffset
 	yoffset := gd.yoffset
 	vals := make([]byte, 8)
-    px := p.c[0]
-    if !gd.xIncreasesRight {
-        xcenter = -xcenter
-        px = -px
-    }
-    py := p.c[1]
-    if !gd.yIncreasesUp {
-        ycenter = -ycenter
-        py = -py
-    }
+	px := p.c[0]
+	if !gd.xIncreasesRight {
+		xcenter = -xcenter
+		px = -px
+	}
+	py := p.c[1]
+	if !gd.yIncreasesUp {
+		ycenter = -ycenter
+		py = -py
+	}
 	var i byte = 0
 	for ; i < 20; i += 1 {
 		xGlobalIndex := i * 2
@@ -92,14 +92,14 @@ takes in geohash string and grid definition
 returns 2D point or error if geohash is invalid
 */
 func UnHash(hash string, gd *GridDef) (*Point, error) {
-    xinc := isSet
-    if !gd.xIncreasesRight {
-        xinc = isUnset
-    }
-    yinc := isSet
-    if !gd.yIncreasesUp {
-        yinc = isUnset
-    }
+	xinc := isSet
+	if !gd.xIncreasesRight {
+		xinc = isUnset
+	}
+	yinc := isSet
+	if !gd.yIncreasesUp {
+		yinc = isUnset
+	}
 	/* copy since we change them in the loop */
 	xcenter := gd.xcenter
 	ycenter := gd.ycenter
@@ -134,7 +134,7 @@ func UnHash(hash string, gd *GridDef) (*Point, error) {
 }
 
 func isUnset(globalIndex byte, vals []byte) bool {
-    return !isSet(globalIndex, vals)
+	return !isSet(globalIndex, vals)
 }
 
 /*
@@ -160,34 +160,34 @@ func BBoxHash(lower, upper *Point, gd *GridDef) (string, string) {
 	ycenter := gd.ycenter
 	xoffset := gd.xoffset
 	yoffset := gd.yoffset
-    lowerx := lower.X()
-    lowery := lower.Y()
-    upperx := upper.X()
-    uppery := upper.Y()
-    if !gd.xIncreasesRight {
-        xcenter = -xcenter
-        lowerx = -lowerx
-        upperx = -upperx
-    }
-    if !gd.yIncreasesUp {
-        ycenter = -ycenter
-        lowery = -lowery
-        uppery = -uppery
-    }
+	lowerx := lower.X()
+	lowery := lower.Y()
+	upperx := upper.X()
+	uppery := upper.Y()
+	if !gd.xIncreasesRight {
+		xcenter = -xcenter
+		lowerx = -lowerx
+		upperx = -upperx
+	}
+	if !gd.yIncreasesUp {
+		ycenter = -ycenter
+		lowery = -lowery
+		uppery = -uppery
+	}
 	/* holds the min geohash prefix */
 	var minbuff bytes.Buffer
 	/* replaces last byte in lower to create max prefix */
 	var maxbyte byte
 	done := false
-    var i byte
+	var i byte
 	/* maxes out at 8 character geohash */
 	for i = 0; !done && i < 8; i += 1 {
 		var curr byte = 0
 		var j byte = 0
 		/* walk through each 5bit hash character */
 		for ; j < 5; j += 1 {
-            globalIndex := (i * 5) + j
-			if globalIndex % 2 == 0 {
+			globalIndex := (i * 5) + j
+			if globalIndex%2 == 0 {
 				xoffset /= 2
 				if lowerx <= xcenter && upperx <= xcenter {
 					xcenter -= xoffset

@@ -1,11 +1,11 @@
 package render
 
 import (
-    "math"
-	"render/style"
 	"image"
 	"image/color"
 	"image/draw"
+	"math"
+	"render/style"
 )
 
 /*
@@ -36,16 +36,16 @@ func (c *circle) Bounds() image.Rectangle {
 
 /* see image.Image interface */
 func (c *circle) At(x, y int) color.Color {
-    rval := color.Alpha{0}
-    if c.r <= 0.5 && x == c.p.X && y == c.p.Y {
-        rval = color.Alpha{255}
-    } else {
-        xx, yy, rr := float64(x-c.p.X)+0.5,
-        float64(y-c.p.Y)+0.5, c.r
-        if xx*xx+yy*yy < rr*rr {
-            rval = color.Alpha{255}
-        }
-    }
+	rval := color.Alpha{0}
+	if c.r <= 0.5 && x == c.p.X && y == c.p.Y {
+		rval = color.Alpha{255}
+	} else {
+		xx, yy, rr := float64(x-c.p.X)+0.5,
+			float64(y-c.p.Y)+0.5, c.r
+		if xx*xx+yy*yy < rr*rr {
+			rval = color.Alpha{255}
+		}
+	}
 	return rval
 }
 
@@ -90,11 +90,11 @@ takes in point to render onto image using style
 */
 func Render(img draw.Image, p *image.Point, pstyle *style.PointStyle) {
 	var mask image.Image
-    /* TODO don't create new mask every time */
+	/* TODO don't create new mask every time */
 	if pstyle.Shape == style.CIRCLE {
 		mask = &circle{*p, pstyle.Style.Size}
 	} else {
-        size := int(math.Ceil(pstyle.Style.Size))
+		size := int(math.Ceil(pstyle.Style.Size))
 		mask = &square{centeredRect(p, size)}
 	}
 	draw.DrawMask(img, img.Bounds(), &image.Uniform{pstyle.Color},
