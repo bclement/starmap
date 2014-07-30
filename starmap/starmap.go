@@ -1,6 +1,10 @@
 package starmap
 
 import (
+    "fmt"
+    "appengine"
+    "appengine/memcache"
+    "bytes"
 	"geom"
 	"image/color"
 	"image/png"
@@ -92,18 +96,47 @@ func parseBbox(key string, r *http.Request) (*geom.Point, *geom.Point) {
 	return geom.NewPoint2D(leftx, lowery), geom.NewPoint2D(rightx, uppery)
 }
 
+func createKey(width, height int, lower, upper *geom.Point) string {
+    return fmt.Sprintf("%v-%v-%v-%v", width, height, lower, upper)
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
+	width := intParam("WIDTH", 1024, r)
+	height := intParam("HEIGHT", 512, r)
+	lower, upper := parseBbox("BBOX", r)
+    ctx := appengine.NewContext(r)
+    cacheKey := createKey(width, height, lower, upper)
+    item, err := memcache.Get(ctx, cacheKey)
+    if err == memcache.ErrCacheMiss {
+        tile, err := createTile(w, width, height, lower, upper)
+        if err != nil {
+            doErr(w, err)
+            return
+        }
+        item = &memcache.Item{Key:cacheKey, Value:tile}
+        err = memcache.Add(ctx, item)
+        if err != nil {
+            doErr(w, err)
+            return
+        }
+    } else if err != nil {
+        doErr(w, err)
+        return
+    }
+
+    w.Write(item.Value)
+}
+
+func createTile(w http.ResponseWriter, width, height int,
+        lower, upper *geom.Point) ([]byte, error) {
 	data, err := LoadData("data/bright.tsv")
 	if err != nil {
-		doErr(w, err)
+        return nil, err
 	}
 	smlCircle := style.NewPointStyle(0.5, color.White, style.CIRCLE)
 	midCircle := style.NewPointStyle(1, color.White, style.CIRCLE)
 	lrgCircle := style.NewPointStyle(2, color.White, style.CIRCLE)
 	superCircle := style.NewPointStyle(3, color.White, style.CIRCLE)
-	width := intParam("WIDTH", 1024, r)
-	height := intParam("HEIGHT", 512, r)
-	lower, upper := parseBbox("BBOX", r)
 	lowerHash, upperHash := geom.BBoxHash(lower, upper, geom.STELLAR)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
 	img := render.Create(width, height, color.Black)
@@ -111,8 +144,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	for _, s := range stars {
 		coord, err := geom.UnHash(s.GeoHash, geom.STELLAR)
 		if err != nil {
-			doErr(w, err)
-			return
+            return nil, err
 		}
 		pix := trans.Transform(coord)
 		mag := s.Magnitude
@@ -121,7 +153,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		if mag < -1 {
 			style = superCircle
 			gray = 255
-		} else if mag < 0 {
+		}else if mag < 0 {
 			style = superCircle
 			gray = 200
 		} else if mag < 2 {
@@ -137,7 +169,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		style.Style.Color = color
 		render.Render(img, pix, style)
 	}
-	if err = png.Encode(w, img); err != nil {
-		doErr(w, err)
+    var rval bytes.Buffer
+	if err = png.Encode(&rval, img); err != nil {
+        return nil, err
 	}
+    return rval.Bytes(), nil
 }
