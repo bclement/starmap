@@ -151,19 +151,33 @@ func TestTransStellar(t *testing.T) {
 	max := NewPoint2D(6, 30)
 	trans := CreateTransform(min, max, 90, 30, STELLAR)
 	p0 := NewPoint2D(18, -30)
-	assertTrans(trans.Transform(p0), &image.Point{0, 30}, t)
+    assertRoundTrip(trans, p0, &image.Point{0, 30}, t)
 	p1 := NewPoint2D(15, -15)
-	assertTrans(trans.Transform(p1), &image.Point{22, 22}, t)
+	assertRoundTrip(trans, p1, &image.Point{22, 22}, t)
 	p2 := NewPoint2D(12, 0)
-	assertTrans(trans.Transform(p2), &image.Point{45, 15}, t)
+	assertRoundTrip(trans, p2, &image.Point{45, 15}, t)
 	p3 := NewPoint2D(9, 15)
-	assertTrans(trans.Transform(p3), &image.Point{67, 7}, t)
+	assertRoundTrip(trans, p3, &image.Point{67, 7}, t)
 	p4 := NewPoint2D(6, 30)
-	assertTrans(trans.Transform(p4), &image.Point{90, 0}, t)
+	assertRoundTrip(trans, p4, &image.Point{90, 0}, t)
+}
+
+func assertRoundTrip(trans *PointTransform, src *Point, exp *image.Point,
+        t *testing.T) {
+    pix := trans.Transform(src)
+	assertTrans(pix, exp, t)
+    assertRevTrans(trans.Reverse(pix), src, t)
 }
 
 func assertTrans(res, exp *image.Point, t *testing.T) {
 	if res.X != exp.X || res.Y != exp.Y {
 		t.Errorf("Expected %v, %v. Got %v, %v", exp.X, exp.Y, res.X, res.Y)
 	}
+}
+
+func assertRevTrans(res, exp *Point, t *testing.T) {
+    if math.Abs(res.X() - exp.X()) > 0.1 ||
+            math.Abs(res.Y() - exp.Y()) > 1.0 {
+        t.Errorf("Expected %v, got %v", exp, res)
+    }
 }

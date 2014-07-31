@@ -45,3 +45,23 @@ func (pt *PointTransform) Transform(p *Point) *image.Point {
 	y := int(math.Floor(rawY))
 	return &image.Point{x, y}
 }
+
+/* take in an image pixel and return a point in spatial dimensions */
+func (pt *PointTransform) Reverse(p *image.Point) *Point {
+    tmpX := float64(p.X)
+    if pt.gd.xIncreasesRight {
+        tmpX += float64(pt.Width)
+    }
+    tmpX *= pt.Dx
+    tmpX -= pt.Max.X()
+    tmpX = -tmpX
+
+    tmpY := float64(p.Y)
+    if !pt.gd.yIncreasesUp {
+        tmpY += float64(pt.Height)
+    }
+    tmpY *= pt.Dy
+    tmpY -= pt.Max.Y()
+    tmpY = -tmpY
+    return NewPoint2D(tmpX, tmpY)
+}
