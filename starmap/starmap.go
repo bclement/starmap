@@ -18,9 +18,13 @@ import (
 
 const StarType string = "Star"
 
+var data Stardata
+var dataErr error
+
 func init() {
 	/* handler() defined below */
 	http.HandleFunc("/", handler)
+	data, dataErr = LoadData("data/bright.tsv")
 }
 
 func raToGrid(ra float64) int {
@@ -129,9 +133,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func createTile(w http.ResponseWriter, width, height int,
         lower, upper *geom.Point) ([]byte, error) {
-	data, err := LoadData("data/bright.tsv")
-	if err != nil {
-        return nil, err
+	if dataErr != nil {
+        return nil, dataErr
 	}
 	smlCircle := style.NewPointStyle(0.5, color.White, style.CIRCLE)
 	midCircle := style.NewPointStyle(1, color.White, style.CIRCLE)
@@ -170,7 +173,7 @@ func createTile(w http.ResponseWriter, width, height int,
 		render.Render(img, pix, style)
 	}
     var rval bytes.Buffer
-	if err = png.Encode(&rval, img); err != nil {
+    if err := png.Encode(&rval, img); err != nil {
         return nil, err
 	}
     return rval.Bytes(), nil
