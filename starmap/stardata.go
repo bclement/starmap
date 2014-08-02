@@ -1,9 +1,9 @@
 package starmap
 
 import (
-    "math"
 	"bufio"
 	"geom"
+	"math"
 	"os"
 	"sort"
 	"strconv"
@@ -48,42 +48,42 @@ func (sd Stardata) FindIndex(geohash string) int {
 
 /* takes in a point, returns closest star or nil if not found */
 func (sd Stardata) FindClosest(p *geom.Point) *Star {
-    lower := geom.NewPoint2D(p.X() + 0.5, p.Y() - 1)
-    upper := geom.NewPoint2D(p.X() - 0.5, p.Y() + 1)
-    lowerHash, upperHash := geom.BBoxHash(lower, upper, geom.STELLAR)
+	lower := geom.NewPoint2D(p.X()+0.5, p.Y()-1)
+	upper := geom.NewPoint2D(p.X()-0.5, p.Y()+1)
+	lowerHash, upperHash := geom.BBoxHash(lower, upper, geom.STELLAR)
 
-    var rval *Star = nil
-    var minDist float64 = math.MaxFloat64
+	var rval *Star = nil
+	var minDist float64 = math.MaxFloat64
 
 	stars := sd.Range(lowerHash, upperHash)
-    for _, s := range stars {
+	for _, s := range stars {
 		coord, err := geom.UnHash(s.GeoHash, geom.STELLAR)
 		if err != nil {
-            continue
+			continue
 		}
-        x := math.Abs(p.X() - coord.X())
-        xx := x * x
-        y := math.Abs(p.Y() - coord.Y())
-        yy := y * y
-        zz := xx + yy
-        if minDist > zz {
-            minDist = zz
-            rval = s
-        }
-    }
-    return rval
+		x := math.Abs(p.X() - coord.X())
+		xx := x * x
+		y := math.Abs(p.Y() - coord.Y())
+		yy := y * y
+		zz := xx + yy
+		if minDist > zz {
+			minDist = zz
+			rval = s
+		}
+	}
+	return rval
 }
 
 /* takes in two strings returns the length of the common prefix */
 func sharedLen(a, b string) int {
-    length := int(math.Min(float64(len(a)), float64(len(b))))
-    rval := 0
-    for ; rval < length; rval += 1 {
-        if a[rval] != b[rval] {
-            break;
-        }
-    }
-    return rval
+	length := int(math.Min(float64(len(a)), float64(len(b))))
+	rval := 0
+	for ; rval < length; rval += 1 {
+		if a[rval] != b[rval] {
+			break
+		}
+	}
+	return rval
 }
 
 /* returns the star that has a matching geohash or nil if not found */

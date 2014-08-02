@@ -1,10 +1,10 @@
 package starmap
 
 import (
-    "fmt"
-    "appengine"
-    "appengine/memcache"
-    "bytes"
+	"appengine"
+	"appengine/memcache"
+	"bytes"
+	"fmt"
 	"geom"
 	"image/color"
 	"image/png"
@@ -13,42 +13,41 @@ import (
 	"render/style"
 )
 
-
 func createKey(width, height int, lower, upper *geom.Point) string {
-    return fmt.Sprintf("%v-%v-%v-%v", width, height, lower, upper)
+	return fmt.Sprintf("%v-%v-%v-%v", width, height, lower, upper)
 }
 
 func getmap(w http.ResponseWriter, r *http.Request) {
 	width := intParam("WIDTH", 1024, r)
 	height := intParam("HEIGHT", 512, r)
 	lower, upper := parseBbox("BBOX", r)
-    ctx := appengine.NewContext(r)
-    cacheKey := createKey(width, height, lower, upper)
-    item, err := memcache.Get(ctx, cacheKey)
-    if err == memcache.ErrCacheMiss {
-        tile, err := createTile(w, width, height, lower, upper)
-        if err != nil {
-            doErr(w, err)
-            return
-        }
-        item = &memcache.Item{Key:cacheKey, Value:tile}
-        err = memcache.Add(ctx, item)
-        if err != nil {
-            doErr(w, err)
-            return
-        }
-    } else if err != nil {
-        doErr(w, err)
-        return
-    }
+	ctx := appengine.NewContext(r)
+	cacheKey := createKey(width, height, lower, upper)
+	item, err := memcache.Get(ctx, cacheKey)
+	if err == memcache.ErrCacheMiss {
+		tile, err := createTile(w, width, height, lower, upper)
+		if err != nil {
+			doErr(w, err)
+			return
+		}
+		item = &memcache.Item{Key: cacheKey, Value: tile}
+		err = memcache.Add(ctx, item)
+		if err != nil {
+			doErr(w, err)
+			return
+		}
+	} else if err != nil {
+		doErr(w, err)
+		return
+	}
 
-    w.Write(item.Value)
+	w.Write(item.Value)
 }
 
 func createTile(w http.ResponseWriter, width, height int,
-        lower, upper *geom.Point) ([]byte, error) {
+	lower, upper *geom.Point) ([]byte, error) {
 	if dataErr != nil {
-        return nil, dataErr
+		return nil, dataErr
 	}
 	smlCircle := style.NewPointStyle(0.5, color.White, style.CIRCLE)
 	midCircle := style.NewPointStyle(1, color.White, style.CIRCLE)
@@ -61,7 +60,7 @@ func createTile(w http.ResponseWriter, width, height int,
 	for _, s := range stars {
 		coord, err := geom.UnHash(s.GeoHash, geom.STELLAR)
 		if err != nil {
-            return nil, err
+			return nil, err
 		}
 		pix := trans.Transform(coord)
 		mag := s.Magnitude
@@ -70,7 +69,7 @@ func createTile(w http.ResponseWriter, width, height int,
 		if mag < -1 {
 			style = superCircle
 			gray = 255
-		}else if mag < 0 {
+		} else if mag < 0 {
 			style = superCircle
 			gray = 200
 		} else if mag < 2 {
@@ -86,9 +85,9 @@ func createTile(w http.ResponseWriter, width, height int,
 		style.Style.Color = color
 		render.Render(img, pix, style)
 	}
-    var rval bytes.Buffer
-    if err := png.Encode(&rval, img); err != nil {
-        return nil, err
+	var rval bytes.Buffer
+	if err := png.Encode(&rval, img); err != nil {
+		return nil, err
 	}
-    return rval.Bytes(), nil
+	return rval.Bytes(), nil
 }

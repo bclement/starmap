@@ -5,15 +5,21 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"text/template"
 )
 
 var data Stardata
 var dataErr error
 
+var featureTemplate *template.Template
+var templateErr error
+
 func init() {
 	/* handler() defined below */
 	http.HandleFunc("/", handler)
 	data, dataErr = LoadData("data/bright.tsv")
+	featureTemplate, templateErr =
+		template.ParseFiles("templates/getfeatureinfo.template")
 }
 
 func doErr(w http.ResponseWriter, err error) {
@@ -81,9 +87,9 @@ func parseBbox(key string, r *http.Request) (*geom.Point, *geom.Point) {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	request := r.FormValue("REQUEST")
-    if strings.EqualFold(request, "GETFEATUREINFO") {
-        // TODO
-    } else {
-        getmap(w, r)
-    }
+	if strings.EqualFold(request, "GETFEATUREINFO") {
+		getfeatureinfo(w, r)
+	} else {
+		getmap(w, r)
+	}
 }

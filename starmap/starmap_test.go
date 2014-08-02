@@ -6,21 +6,21 @@ import (
 )
 
 func TestPrefix(t *testing.T) {
-    if sharedLen("", "") != 0 {
-        t.Errorf("Broken for empty strings")
-    }
-    if sharedLen("a", "b") != 0 {
-        t.Errorf("Broken for no shared prefix")
-    }
-    if sharedLen("aa", "a") != 1 {
-        t.Errorf("Broken for single common")
-    }
-    if sharedLen("thecake", "thecakeisalie") != 7 {
-        t.Errorf("Broken for shared prefix")
-    }
-    if sharedLen("aaa", "aaa") != 3 {
-        t.Errorf("Broken for match")
-    }
+	if sharedLen("", "") != 0 {
+		t.Errorf("Broken for empty strings")
+	}
+	if sharedLen("a", "b") != 0 {
+		t.Errorf("Broken for no shared prefix")
+	}
+	if sharedLen("aa", "a") != 1 {
+		t.Errorf("Broken for single common")
+	}
+	if sharedLen("thecake", "thecakeisalie") != 7 {
+		t.Errorf("Broken for shared prefix")
+	}
+	if sharedLen("aaa", "aaa") != 3 {
+		t.Errorf("Broken for match")
+	}
 }
 
 func TestClosest(t *testing.T) {
@@ -28,17 +28,16 @@ func TestClosest(t *testing.T) {
 	if err != nil {
 		t.Errorf("Can't load test data: %v", err)
 	}
-    //p := geom.NewPoint2D(14.579589, 25.817871)
-    p := geom.NewPoint2D(14.7249, 26.5155)
-    res := data.FindClosest(p)
-    if res == nil || res.GeoHash != "ehdyym3b" {
-        t.Errorf("no point found")
-    } else if res.GeoHash != "ehdyym3b" {
-        p, _ = geom.UnHash(res.GeoHash, geom.STELLAR)
-        t.Errorf("Expected , got %v", p)
-    }
+	//p := geom.NewPoint2D(14.579589, 25.817871)
+	p := geom.NewPoint2D(14.7249, 26.5155)
+	res := data.FindClosest(p)
+	if res == nil || res.GeoHash != "ehdyym3b" {
+		t.Errorf("no point found")
+	} else if res.GeoHash != "ehdyym3b" {
+		p, _ = geom.UnHash(res.GeoHash, geom.STELLAR)
+		t.Errorf("Expected , got %v", p)
+	}
 }
-
 
 func TestFilter(t *testing.T) {
 	lower := geom.NewPoint2D(24, -90)
