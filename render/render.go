@@ -101,16 +101,75 @@ func Render(img draw.Image, p *image.Point, pstyle *style.PointStyle) {
 		image.ZP, mask, image.ZP, draw.Over)
 }
 
+func round(x float64) float64 {
+    return float64(int(x +0.5))
+}
+
+func fpart(x float64) float64 {
+    return x - float64(int(x))
+}
+
+func rfpart(x float64) float64 {
+    return 1 - fpart(x)
+}
+
+func plot(img draw.Image, x, y int, c float64) {
+    gray := uint8(255 * c)
+    color := color.RGBA{gray, gray, gray, 255}
+    img.Set(x, y, color)
+}
+
+func drawEndpoint(img draw.Image, x, y, gradient float64,
+        first, steep bool) float64 {
+    xend := round(x)
+    yend := y + gradient * (xend - x)
+    var xgap float64
+    if first {
+        xgap = rfpart(x + 0.5)
+    } else {
+        xgap = fpart(x + 0.5)
+    }
+    xpix := int(xend)
+    ypix := int(yend)
+    if steep {
+        plot(img, ypix, xpix, rfpart(yend) * xgap)
+        plot(img, ypix+1, xpix, fpart(yend) * xgap)
+    } else {
+        plot(img, xpix, ypix, rfpart(yend) * xgap)
+        plot(img, xpix, ypix+1, fpart(yend) * xgap)
+    }
+    return yend + gradient
+}
+
 func RenderLine(img draw.Image, p0, p1 *image.Point, s *style.PolygonStyle) {
-    run := float64(p1.X - p0.X)
-    rise := float64(p1.Y - p0.Y)
-    length := math.Hypot(rise, run)
-    dx := run / length
-    dy := rise / length
-    total := int(math.Ceil(length))
-    for i := 0; i < total; i += 1 {
-        x := float64(p0.X) + float64(i) * dx
-        y := float64(p0.Y) + float64(i) * dy
-        img.Set(int(x), int(y), s.Color)
+    steep := math.Abs(float64(p1.Y-p0.Y)) > math.Abs(float64(p1.X-p0.X))
+    x0, y0 := float64(p0.X), float64(p0.Y)
+    x1, y1 := float64(p1.X), float64(p1.Y)
+    if steep {
+        x0, y0 = y0, x0
+        x1, y1 = y1, x1
+    }
+    if x0 > x1 {
+        x0, x1 = x1, x0
+        y0, y1 = y1, y0
+    }
+    dx := x1 - x0
+    dy := y1 - y0
+    gradient := dy / dx
+    xpix1 := int(round(x0))
+    xpix2 := int(round(x1))
+    intery := drawEndpoint(img, x0, y0, gradient, true, steep)
+    drawEndpoint(img, x1, y1, gradient, false, steep)
+
+    for x := xpix1 + 1; x < xpix2; x += 1 {
+        if steep {
+            plot(img, int(intery), x, rfpart(intery))
+            plot(img, int(intery)+1, x, fpart(intery))
+        } else {
+            plot(img, x, int(intery), rfpart(intery))
+            plot(img, x, int(intery)+1, fpart(intery))
+        }
+        intery += gradient
     }
 }
+
