@@ -59,3 +59,21 @@ func TestCircle(t *testing.T) {
 		t.Error("encode %s", err)
 	}
 }
+
+func TestLines(t *testing.T) {
+    img := Create(256,256, color.Black)
+    s := style.NewPolyStyle(1, color.White)
+    p0 := &image.Point{0,0}
+    for x := 0; x < 256; x += 16 {
+        p1 := &image.Point{x, 255}
+        RenderLine(img, p0, p1, s)
+    }
+	f, err := os.OpenFile("/tmp/lines.png", os.O_CREATE|os.O_WRONLY, 0664)
+	if err != nil {
+		t.Errorf("open %s", err)
+	}
+	defer f.Close()
+	if err = png.Encode(f, img); err != nil {
+		t.Error("encode %s", err)
+	}
+}

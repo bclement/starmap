@@ -100,3 +100,17 @@ func Render(img draw.Image, p *image.Point, pstyle *style.PointStyle) {
 	draw.DrawMask(img, img.Bounds(), &image.Uniform{pstyle.Color},
 		image.ZP, mask, image.ZP, draw.Over)
 }
+
+func RenderLine(img draw.Image, p0, p1 *image.Point, s *style.PolygonStyle) {
+    run := float64(p1.X - p0.X)
+    rise := float64(p1.Y - p0.Y)
+    length := math.Hypot(rise, run)
+    dx := run / length
+    dy := rise / length
+    total := int(math.Ceil(length))
+    for i := 0; i < total; i += 1 {
+        x := float64(p0.X) + float64(i) * dx
+        y := float64(p0.Y) + float64(i) * dy
+        img.Set(int(x), int(y), s.Color)
+    }
+}

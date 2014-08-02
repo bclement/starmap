@@ -38,3 +38,6 @@ type PolygonStyle struct {
     Style
 }
 
+func NewPolyStyle(size float64, color color.Color) *PolygonStyle {
+    return &PolygonStyle{Style{size, color}}
+}
