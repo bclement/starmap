@@ -1,6 +1,7 @@
 package render
 
 import (
+    "geom"
 	"image"
 	"image/color"
 	"image/draw"
@@ -172,4 +173,33 @@ func RenderLine(img draw.Image, p0, p1 *image.Point, s *style.PolygonStyle) {
         intery += gradient
     }
 }
+
+func RenderPoly(img draw.Image, p *geom.Polygon, t *geom.PointTransform,
+        s *style.PolygonStyle) {
+    coords := p.Coords()
+    polyLen := coords.Len()
+    if polyLen < 2 {
+        return
+    }
+    first := t.TransformCoord(coords.Get(0))
+    prev := first
+    for i := 1; i < polyLen; i += 1 {
+        curr := t.TransformCoord(coords.Get(i))
+        RenderLine(img, prev, curr, s)
+        prev = curr
+    }
+    RenderLine(img, prev, first, s)
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -26,6 +26,14 @@ func doErr(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), http.StatusInternalServerError)
 }
 
+func strParam(key, defaultValue string, r *http.Request) string {
+    rval := r.FormValue(key)
+    if rval == "" {
+        rval = defaultValue
+    }
+    return rval
+}
+
 /* parse integer url parameter
 return defaultValue if parameter isn't present or is malformed */
 func intParam(key string, defaultValue int, r *http.Request) int {

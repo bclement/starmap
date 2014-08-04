@@ -16,7 +16,7 @@ func (cs *CoordinateSeq) Len() int {
 	return len(cs.Coords) / cs.Dims
 }
 
-/* returns number of dimensions per coordinate */
+/* returns coordinate at index */
 func (cs *CoordinateSeq) Get(index int) []float64 {
 	start := index * cs.Dims
 	return cs.Coords[start : start+cs.Dims]
@@ -86,16 +86,20 @@ type Polygon struct {
 	c CoordinateSeq
 }
 
+func NewPoly(dims int, coords ...float64) (*Polygon, error) {
+	if dims < 2 || len(coords)%dims != 0 {
+		return nil, fmt.Errorf("Invalid dimensions: %s", len(coords))
+	}
+	return &Polygon{CoordinateSeq{coords, dims}}, nil
+}
+
 /*
 takes in coordinate slice packed as [x1,y1,x2,y2...]
 returns newly created 2D polygon
 error if length of coords isn't divisible by 2
 */
 func NewPoly2D(coords ...float64) (*Polygon, error) {
-	if len(coords)%2 != 0 {
-		return nil, fmt.Errorf("Invalid dimensions: %s", len(coords))
-	}
-	return &Polygon{CoordinateSeq{coords, 2}}, nil
+    return NewPoly(2, coords...)
 }
 
 /*
@@ -104,10 +108,7 @@ returns newly created 3D polygon
 error if length coords insn't divisible by 3
 */
 func NewPoly3D(coords ...float64) (*Polygon, error) {
-	if len(coords)%3 != 0 {
-		return nil, fmt.Errorf("Invalid dimensions: %s", len(coords))
-	}
-	return &Polygon{CoordinateSeq{coords, 3}}, nil
+    return NewPoly(3, coords...)
 }
 
 /* see Geometry interface */
@@ -179,13 +180,18 @@ func (bb *BoundingBox) Covers(g Geometry) bool {
 	return checkAll(bb, g, gte)
 }
 
+func (bb *BoundingBox) Touches(g Geometry) bool {
+    return checkAny(bb, g, gte)
+}
+
 /*
 takes in bounds, geometry and a comparison function
 return true if bounds has enough dimensions to cover geometry and
 all geometry coordinates return true for comp(coord, min) and
 true for comp(max, coord) for bounds min and max
 */
-func checkAll(bb *BoundingBox, g Geometry, comp func(float64, float64) bool) bool {
+func checkAll(bb *BoundingBox, g Geometry,
+        comp func(float64, float64) bool) bool {
 	bbdims := len(bb.min)
 	gdims := g.Dims()
 	gc := g.Coords()
@@ -204,6 +210,40 @@ func checkAll(bb *BoundingBox, g Geometry, comp func(float64, float64) bool) boo
 		}
 	}
 	return true
+}
+
+/*
+takes in bounds, geometry and a comparison function
+return true if bounds has enough dimensions to cover geometry and
+any geometry coordinates return true for comp(coord, min) and
+true for comp(max, coord) for bounds min and max
+*/
+func checkAny(bb *BoundingBox, g Geometry,
+        comp func(float64, float64) bool) bool {
+	bbdims := len(bb.min)
+	gdims := g.Dims()
+	gc := g.Coords()
+	size := gc.Len()
+	if gdims <= bbdims {
+		for i := 0; i < size; i += 1 {
+			coord := gc.Get(i)
+            passes := true
+			for d := 0; d < bbdims && d < gdims; d += 1 {
+				if !comp(coord[d], bb.min[d]) {
+					passes = false
+                    break
+				}
+				if !comp(bb.max[d], coord[d]) {
+					passes = false
+                    break;
+				}
+			}
+            if passes {
+                return true
+            }
+		}
+	}
+	return false
 }
 
 /* return true if a and b are the same size and have the same elements */

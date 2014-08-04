@@ -1,8 +1,14 @@
 package starmap
 
 import (
+    "render"
 	"geom"
 	"testing"
+	"image/color"
+    "image/draw"
+	"image/png"
+	"os"
+	"render/style"
 )
 
 func TestPrefix(t *testing.T) {
@@ -72,5 +78,48 @@ func assertFilter(t *testing.T, lower, upper *geom.Point, num int,
 		if pix.X < 0 || pix.X >= width || pix.Y < 0 || pix.Y >= height {
 			t.Errorf("problem transforming %v, %v", pix, coord)
 		}
+	}
+}
+
+func TestReadPoly(t *testing.T) {
+    c, err := readWktFile("../data/consts/Equuleus.wkt", "Equuleus")
+    if err != nil {
+        t.Errorf("cant read: %v", err)
+    }
+    if c.Name != "Equuleus" {
+        t.Errorf("expected name %v, got %v", "Equuleus", c.Name)
+    }
+    coords := c.Geom.Coords()
+    if coords.Len() != 38 {
+        t.Errorf("expected %v coords, got %v", 38, coords.Len())
+    }
+}
+
+func TestConstFilter(t *testing.T) {
+    data, err := LoadConstellations("../data/consts")
+    if err != nil {
+        t.Errorf("loading: %v", err)
+    }
+    s := style.NewPolyStyle(1, color.White)
+    width := 512
+    height := 256
+	lower := geom.NewPoint2D(24, -90)
+    upper := geom.NewPoint2D(0, 90)
+	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
+    for _, c := range(data) {
+	    img := render.Create(width, height, color.Black)
+        render.RenderPoly(img, c.Geom, trans, s)
+        writeImg(t, img, "/tmp/nexconst/" + c.Name + ".png")
+    }
+}
+
+func writeImg(t *testing.T, img draw.Image, fname string) {
+	f, err := os.OpenFile(fname, os.O_CREATE|os.O_WRONLY, 0664)
+	if err != nil {
+		t.Errorf("open %s", err)
+	}
+	defer f.Close()
+	if err = png.Encode(f, img); err != nil {
+		t.Error("encode %s", err)
 	}
 }

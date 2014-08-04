@@ -1,8 +1,10 @@
 package render
 
 import (
+    "geom"
 	"image"
 	"image/color"
+    "image/draw"
 	"image/png"
 	"os"
 	"render/style"
@@ -28,7 +30,11 @@ func TestCreate(t *testing.T) {
 	Render(img, p3, smallSquare)
 	Render(img, p4, largeCircle)
 	Render(img, p5, largeSquare)
-	f, err := os.OpenFile("/tmp/res.png", os.O_CREATE|os.O_WRONLY, 0664)
+    writeImg(t, img, "/tmp/res.png")
+}
+
+func writeImg(t *testing.T, img draw.Image, fname string) {
+	f, err := os.OpenFile(fname, os.O_CREATE|os.O_WRONLY, 0664)
 	if err != nil {
 		t.Errorf("open %s", err)
 	}
@@ -50,14 +56,7 @@ func TestCircle(t *testing.T) {
 			Render(img, p, circle)
 		}
 	}
-	f, err := os.OpenFile("/tmp/dots.png", os.O_CREATE|os.O_WRONLY, 0664)
-	if err != nil {
-		t.Errorf("open %s", err)
-	}
-	defer f.Close()
-	if err = png.Encode(f, img); err != nil {
-		t.Error("encode %s", err)
-	}
+    writeImg(t, img, "/tmp/dots.png")
 }
 
 func TestLines(t *testing.T) {
@@ -68,12 +67,21 @@ func TestLines(t *testing.T) {
         p1 := &image.Point{x, 255}
         RenderLine(img, p0, p1, s)
     }
-	f, err := os.OpenFile("/tmp/lines.png", os.O_CREATE|os.O_WRONLY, 0664)
-	if err != nil {
-		t.Errorf("open %s", err)
-	}
-	defer f.Close()
-	if err = png.Encode(f, img); err != nil {
-		t.Error("encode %s", err)
-	}
+    writeImg(t, img, "/tmp/lines.png")
+}
+
+func TestPolys(t *testing.T) {
+    img := Create(256, 256, color.Black)
+    s := style.NewPolyStyle(1, color.White)
+    p1, err1 := geom.NewPoly2D(16.5,67.5,16.5,22.5,13.5,22.5,13.5,67.5)
+    p2, err2 := geom.NewPoly2D(14,22.5,13.5,11,13,22.5,13.5,33)
+    if err1 != nil || err2 != nil {
+        t.Errorf("can't create poly %v %v", err1, err1)
+    }
+	min := geom.NewPoint2D(15, 0)
+	max := geom.NewPoint2D(12, 45)
+	trans := geom.CreateTransform(min, max, 255, 255, geom.STELLAR)
+    RenderPoly(img, p1, trans, s)
+    RenderPoly(img, p2, trans, s)
+    writeImg(t, img, "/tmp/poly.png")
 }
