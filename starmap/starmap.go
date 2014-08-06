@@ -11,6 +11,9 @@ import (
 var data Stardata
 var dataErr error
 
+var constelData Constellations
+var constelErr error
+
 var featureTemplate *template.Template
 var templateErr error
 
@@ -18,6 +21,7 @@ func init() {
 	/* handler() defined below */
 	http.HandleFunc("/", handler)
 	data, dataErr = LoadData("data/bright.tsv")
+    constelData, constelErr = LoadConstellations("data/consts")
 	featureTemplate, templateErr =
 		template.ParseFiles("templates/getfeatureinfo.template")
 }

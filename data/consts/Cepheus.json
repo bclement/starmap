@@ -1,0 +1,5 @@
+{
+    "Name": "Cepheus",
+    "Family": "Perseus",
+    "WktFiles": ["left-Cepheus.wkt", "right-Cepheus.wkt"]
+}

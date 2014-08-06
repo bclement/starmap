@@ -82,16 +82,13 @@ func assertFilter(t *testing.T, lower, upper *geom.Point, num int,
 }
 
 func TestReadPoly(t *testing.T) {
-    c, err := readWktFile("../data/consts/Equuleus.wkt", "Equuleus")
+    p, err := readWktFile("../data/consts/Equuleus.wkt")
     if err != nil {
         t.Errorf("cant read: %v", err)
     }
-    if c.Name != "Equuleus" {
-        t.Errorf("expected name %v, got %v", "Equuleus", c.Name)
-    }
-    coords := c.Geom.Coords()
-    if coords.Len() != 38 {
-        t.Errorf("expected %v coords, got %v", 38, coords.Len())
+    coords := p.Coords()
+    if coords.Len() != 39 {
+        t.Errorf("expected %v coords, got %v", 39, coords.Len())
     }
 }
 
@@ -108,7 +105,9 @@ func TestConstFilter(t *testing.T) {
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
     for _, c := range(data) {
 	    img := render.Create(width, height, color.Black)
-        render.RenderPoly(img, c.Geom, trans, s)
+        for _, p := range(c.Geoms){
+            render.RenderPoly(img, p, trans, s)
+        }
         writeImg(t, img, "/tmp/nexconst/" + c.Name + ".png")
     }
 }
@@ -120,6 +119,6 @@ func writeImg(t *testing.T, img draw.Image, fname string) {
 	}
 	defer f.Close()
 	if err = png.Encode(f, img); err != nil {
-		t.Error("encode %s", err)
+		t.Errorf("encode %v", err)
 	}
 }

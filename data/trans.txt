@@ -1,0 +1,89 @@
+AND	Andromeda
+LEO	Leo
+ANT	Antila
+LMI	Leo Minor
+APS	Apus
+LEP	Lepus
+AQR	Aquarius
+LIB	Libra
+AQL	Aquila
+LUP	Lupus
+ARA	Ara
+LYN	Lynx
+ARI	Aries
+LYR	Lyra
+AUR	Auriga
+MEN	Mensa
+BOO	Bootes
+MIC	Microscopium
+CAE	Caelum
+MON	Monoceros
+CAM	Camelopardis
+MUS	Musca
+CNC	Cancer
+NOR	Norma
+CVN	Canes Venatici
+OCT	Octans
+CMA	Canis Major
+OPH	Ophiuchus
+CMI	Canis Minor
+ORI	Orion
+CAP	Capricornus
+PAV	Pavo
+CAR	Carina
+PEG	Pegasus
+CAS	Cassiopeia
+PER	Perseus
+CEN	Centaurus
+PHE	Phoenix
+CEP	Cepheus
+PIC	Pictor
+CET	Cetus
+PSC	Pisces
+CHA	Chamaeleon
+PSA	Pisces Austrinus
+CIR	Circinus
+PUP	Puppis
+COL	Columba
+PYX	Pyxis
+COM	Coma Berenices
+RET	Reticulum
+CRA	Corona Australis
+SGE	Sagitta
+CRB	Corona Borealis
+SGR	Sagittarius
+CRV	Corvus
+SCO	Scorpius
+CRT	Crater
+SCL	Sculptor
+CRU	Crux
+SCT	Scutum
+CYG	Cygnus
+SER1	Serpens Caput
+DEL	Delphinus
+SER2	Serpens Cauda
+DOR	Dorado
+SEX	Sextans
+DRA	Draco
+TAU	Taurus
+EQU	Equuleus
+TEL	Telescopium
+ERI	Eridanus
+TRI	Triangulum
+FOR	Fornax
+TRA	Triangulum Australe
+GEM	Gemini
+TUC	Tucana
+GRU	Grus
+UMA	Ursa Major
+HER	Hercules
+UMI	Ursa Minor
+HOR	Horologium
+VEL	Vela
+HYA	Hydra
+VIR	Virgo
+HYI	Hydrus
+VOL	Volans
+IND	Indus
+VUL	Vulpecula
+LAC	Lacerta

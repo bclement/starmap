@@ -23,7 +23,7 @@ func getmap(w http.ResponseWriter, r *http.Request) {
 	width := intParam("WIDTH", 1024, r)
 	height := intParam("HEIGHT", 512, r)
 	lower, upper := parseBbox("BBOX", r)
-    layer := strParam("LAYER", "stars", r)
+    layer := strParam("LAYERS", "stars", r)
 	ctx := appengine.NewContext(r)
 	cacheKey := createKey(layer, width, height, lower, upper)
 	item, err := memcache.Get(ctx, cacheKey)
@@ -50,28 +50,27 @@ func getmap(w http.ResponseWriter, r *http.Request) {
 func createTile(w http.ResponseWriter, layer string, width, height int,
 	    lower, upper *geom.Point) ([]byte, error) {
     layer = strings.ToLower(layer)
-    /* this if is broke */
     if layer == "constellations" {
         return createConstTile(w, width, height, lower, upper)
     } else {
-        //return createConstTile(w, width, height, lower, upper)
         return createStarTile(w, width, height, lower, upper)
     }
 }
 
 func createConstTile(w http.ResponseWriter, width, height int,
 	    lower, upper *geom.Point) ([]byte, error) {
-    data, err := LoadConstellations("data/consts")
-    if err != nil {
-        return nil, err
+    if constelErr != nil {
+        return nil, constelErr
     }
     s := style.NewPolyStyle(1, color.White)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
-	img := render.Create(width, height, color.Black)
+	img := render.CreateTransparent(width, height)
     bbox := geom.NewBBox2D(lower.X(), lower.Y(), upper.X(), upper.Y())
-    for _, c := range(data) {
-        if bbox.Touches(c.Geom) {
-            render.RenderPoly(img, c.Geom, trans, s)
+    for _, c := range(constelData) {
+        for _, p := range(c.Geoms) {
+            if bbox.Touches(p) {
+                render.RenderPoly(img, p, trans, s)
+            }
         }
     }
 	var rval bytes.Buffer

@@ -86,6 +86,11 @@ func Create(width, height int, bgcolor color.Color) draw.Image {
 	return rval
 }
 
+func CreateTransparent(width, height int) draw.Image {
+	/* create image with background color */
+	return image.NewRGBA(image.Rect(0, 0, width, height))
+}
+
 /*
 takes in point to render onto image using style
 */

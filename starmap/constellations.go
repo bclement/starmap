@@ -11,6 +11,7 @@ import(
     "io/ioutil"
     "strings"
     "path"
+    "encoding/json"
 )
 
 const(
@@ -21,7 +22,9 @@ const(
 
 type Constellation struct {
     Name string
-    Geom *geom.Polygon
+    Family string
+    WktFiles []string
+    Geoms []*geom.Polygon
 }
 
 type Constellations []*Constellation
@@ -31,26 +34,44 @@ func LoadConstellations(constDir string) (Constellations, error) {
     if err != nil {
         return nil, err
     }
-    suffix := ".wkt"
-    sufLen := len(suffix)
+    suffix := ".json"
     rval := make(Constellations, 0, 88)
     for _, info := range(infos) {
         name := info.Name()
         if strings.HasSuffix(name, suffix) {
             fullPath := path.Join(constDir, name)
-            constName := name[:len(name)-sufLen]
-            c, err := readWktFile(fullPath, constName)
-            if err == nil {
-                rval = append(rval, c)
-            } else {
-                return nil, err
+            constel, err := readJsonFile(fullPath)
+            if err != nil {
+                return nil, fmt.Errorf("Unable to parse %v: %v", fullPath, err)
             }
+            constel.Geoms = make([]*geom.Polygon, 0, len(constel.WktFiles))
+            for _, wktFile := range(constel.WktFiles) {
+                fullWktPath := path.Join(constDir, wktFile)
+                poly, err := readWktFile(fullWktPath)
+                if err != nil {
+                    return nil, fmt.Errorf("Unable to parse %v: %v",
+                        fullWktPath, err)
+                }
+                constel.Geoms = append(constel.Geoms, poly)
+            }
+            rval = append(rval, constel)
         }
     }
     return rval, nil
 }
 
-func readWktFile(path, name string) (*Constellation, error) {
+func readJsonFile(path string) (*Constellation, error) {
+    f, err := os.Open(path)
+    if err != nil {
+        return nil, err
+    }
+    dec := json.NewDecoder(f)
+    var rval Constellation
+    err = dec.Decode(&rval)
+    return &rval, err
+}
+
+func readWktFile(path string) (*geom.Polygon, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -114,11 +135,7 @@ func readWktFile(path, name string) (*Constellation, error) {
             return nil, fmt.Errorf("mismatched dimensions in file: %v", path)
         }
     }
-    poly, err := geom.NewPoly(prevDims, coords...)
-    if err != nil {
-        return nil, err
-    }
-    return &Constellation{name, poly}, nil
+    return geom.NewPoly(prevDims, coords...)
 }
 
 

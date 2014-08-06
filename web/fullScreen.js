@@ -17,9 +17,11 @@ var mousePositionCtrl = new OpenLayers.Control.MousePosition({
     }
 }
 );
-layer = new OpenLayers.Layer.WMS( "OpenLayers WMS", "/wms",
-        {layers: 'stars'} );
-layer.getURL = function (bounds) {
+starlayer = new OpenLayers.Layer.WMS( "stars", "/wms",
+        {layers: 'stars'}, {'displayInLayerSwitcher':false} );
+constlayer = new OpenLayers.Layer.WMS( "constellations", "/wms",
+        {layers: 'constellations'}, {'isBaseLayer': false} );
+stellarUrl = function (bounds) {
     bounds = this.adjustBounds(bounds);
     bounds = toStellar(bounds)
 
@@ -35,9 +37,12 @@ layer.getURL = function (bounds) {
     var requestString = this.getFullRequestString(newParams);
     return requestString;
 };
+starlayer.getURL = stellarUrl;
+constlayer.getURL = stellarUrl;
+constlayer.setVisibility(false);
 var map = new OpenLayers.Map({
     div: "map",
-    layers: [layer],
+    layers: [starlayer, constlayer],
     center: [0, 0],
     zoom: 3
 });

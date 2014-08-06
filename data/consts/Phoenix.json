@@ -1,0 +1,5 @@
+{
+    "Name": "Phoenix",
+    "Family": "Bayer",
+    "WktFiles": ["left-Phoenix.wkt","right-Phoenix.wkt"]
+}
