@@ -204,6 +204,20 @@ func RenderPoly(img draw.Image, p *geom.Polygon, t *geom.PointTransform,
     RenderLine(img, prev, first, s)
 }
 
+func RenderString(img draw.Image, chars image.Image, cwidth int,
+        p *image.Point, s string, c color.Color) {
+    src := &image.Uniform{c}
+    cbounds := chars.Bounds()
+    cheight := cbounds.Max.Y - cbounds.Min.Y
+    rec := image.Rect(p.X, p.Y, p.X + cwidth, p.Y + cheight)
+    offset := image.Pt(cwidth, 0)
+    for _, c := range(s) {
+        charIndex := int(c - ' ')
+        mp := image.Pt(charIndex * cwidth, 0)
+        draw.DrawMask(img, rec, src, image.ZP, chars, mp, draw.Over)
+        rec = rec.Add(offset)
+    }
+}
 
 
 

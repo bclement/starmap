@@ -1,6 +1,7 @@
 package render
 
 import (
+    "bufio"
     "geom"
 	"image"
 	"image/color"
@@ -84,4 +85,20 @@ func TestPolys(t *testing.T) {
     RenderPoly(img, p1, trans, s)
     RenderPoly(img, p2, trans, s)
     writeImg(t, img, "/tmp/poly.png")
+}
+
+func TestString(t *testing.T) {
+    img := Create(256, 256, color.Black)
+    f, err := os.Open("../data/chars.png")
+    if err != nil {
+        t.Errorf("can't open chars: %v", err)
+    }
+    defer f.Close()
+    chars, _, err := image.Decode(bufio.NewReader(f))
+    if err != nil {
+        t.Errorf("can't decode chars: %v", err)
+    }
+    p := image.Pt(20, 20)
+    RenderString(img, chars, 10, &p, "Hello World", color.White)
+    writeImg(t, img, "/tmp/strings.png")
 }
