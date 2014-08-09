@@ -86,6 +86,7 @@ func Create(width, height int, bgcolor color.Color) draw.Image {
 	return rval
 }
 
+/* create a new image that is an alpha layer that is set to transparent */
 func CreateTransparent(width, height int) draw.Image {
 	/* create image with background color */
 	return image.NewRGBA(image.Rect(0, 0, width, height))
@@ -107,24 +108,29 @@ func Render(img draw.Image, p *image.Point, pstyle *style.PointStyle) {
 		image.ZP, mask, image.ZP, draw.Over)
 }
 
+/* return half round up value of x */
 func round(x float64) float64 {
     return float64(int(x +0.5))
 }
 
+/* return the decimal part of x */
 func fpart(x float64) float64 {
     return x - float64(int(x))
 }
 
+/* return the inverse of the decimal part of x */
 func rfpart(x float64) float64 {
     return 1 - fpart(x)
 }
 
+/* draw point x,y using grayscale c (0..1) */
 func plot(img draw.Image, x, y int, c float64) {
     gray := uint8(255 * c)
     color := color.RGBA{gray, gray, gray, 255}
     img.Set(x, y, color)
 }
 
+/* line endpoint rendering for Wu's line drawing */
 func drawEndpoint(img draw.Image, x, y, gradient float64,
         first, steep bool) float64 {
     xend := round(x)
@@ -147,6 +153,7 @@ func drawEndpoint(img draw.Image, x, y, gradient float64,
     return yend + gradient
 }
 
+/* draw a line from p0 to p1 on img, uses Wu's algorithm */
 func RenderLine(img draw.Image, p0, p1 *image.Point, s *style.PolygonStyle) {
     steep := math.Abs(float64(p1.Y-p0.Y)) > math.Abs(float64(p1.X-p0.X))
     x0, y0 := float64(p0.X), float64(p0.Y)
@@ -179,6 +186,7 @@ func RenderLine(img draw.Image, p0, p1 *image.Point, s *style.PolygonStyle) {
     }
 }
 
+/* draw all line segments in polygon on img */
 func RenderPoly(img draw.Image, p *geom.Polygon, t *geom.PointTransform,
         s *style.PolygonStyle) {
     coords := p.Coords()

@@ -1,6 +1,7 @@
 package starmap
 
 import (
+    "strings"
 	"fmt"
 	"geom"
 	"image"
@@ -18,6 +19,13 @@ type Param struct {
 type Feature struct {
 	Name   string
 	Params []Param
+}
+
+func constAsParams(constel *Constellation) []Param {
+    rval := make([]Param, 0, 3)
+    rval = addParam(rval, "name", constel.Name)
+    rval = addParam(rval, "family", constel.Family)
+    return rval
 }
 
 /* takes in a star and converts it to a parameter slice */
@@ -49,11 +57,21 @@ func getfeatureinfo(w http.ResponseWriter, r *http.Request) {
 	lower, upper := parseBbox("BBOX", r)
 	i := intParam("X", 0, r)
 	j := intParam("Y", 0, r)
+    layersParam := strParam("LAYERS", "stars", r)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
 	coord := trans.Reverse(&image.Point{i, j})
-	star := data.FindClosest(coord)
-	if star != nil {
-		features := []Feature{Feature{"star", asParams(star)}}
+    layers := strings.Split(layersParam, ",")
+    features := make([]*Feature, 0, 3)
+    for _, layer := range(layers) {
+        if layer == "stars" {
+            sf := starFeatures(coord)
+            features = append(features, sf...)
+        } else if layer == "constellations" {
+            cf := constelFeatures(coord)
+            features = append(features, cf...)
+        }
+    }
+	if len(features) > 0 {
 		err := featureTemplate.Execute(w, features)
 		if err != nil {
 			doErr(w, err)
@@ -62,3 +80,33 @@ func getfeatureinfo(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(noDataFeatureInfo))
 	}
 }
+
+func starFeatures(point *geom.Point) []*Feature {
+    star := data.FindClosest(point)
+    if star != nil {
+        return []*Feature{&Feature{"star", asParams(star)}}
+    } else {
+        return []*Feature{}
+    }
+}
+
+func constelFeatures(point *geom.Point) []*Feature {
+    rval := make([]*Feature, 0, 2)
+    for _, c := range(constelData) {
+        for _, p := range(c.Geoms) {
+            if p.Contains(point) {
+                rval = append(rval, &Feature{"constellation",
+                    constAsParams(c)})
+            }
+        }
+    }
+    return rval
+}
+
+
+
+
+
+
+
+
