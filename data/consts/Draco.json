@@ -1,5 +1,6 @@
 {
     "Name": "Draco",
     "Family": "Ursa Major",
-    "WktFiles": ["Draco.wkt"]
+    "WktFiles": ["Draco.wkt"],
+    "labelPoints": [[18.81,65.17]]
 }

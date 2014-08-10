@@ -25,6 +25,7 @@ type Constellation struct {
     Family string
     WktFiles []string
     Geoms []*geom.Polygon
+    LabelPoints [][]float64
 }
 
 type Constellations []*Constellation

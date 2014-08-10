@@ -1,5 +1,6 @@
 {
     "Name": "Scutum",
     "Family": "Hercules",
-    "WktFiles": ["Scutum.wkt"]
+    "WktFiles": ["Scutum.wkt"],
+    "labelPoints": [[18.91,-4.79]]
 }

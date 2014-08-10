@@ -1,5 +1,6 @@
 {
     "Name": "Equuleus",
     "Family": "Heavenly Waters",
-    "WktFiles": ["Equuleus.wkt"]
+    "WktFiles": ["Equuleus.wkt"],
+    "labelPoints": [[21.38,6.02]]
 }

@@ -1,5 +1,6 @@
 {
     "Name": "Vulpecula",
     "Family": "Hercules",
-    "WktFiles": ["Vulpecula.wkt"]
+    "WktFiles": ["Vulpecula.wkt"],
+    "labelPoints": [[21.25,27.29]]
 }

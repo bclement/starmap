@@ -1,5 +1,6 @@
 {
     "Name": "Auriga",
     "Family": "Perseus",
-    "WktFiles": ["Auriga.wkt"]
+    "WktFiles": ["Auriga.wkt"],
+    "labelPoints": [[6.84,48.12]]
 }

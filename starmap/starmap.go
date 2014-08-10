@@ -1,12 +1,18 @@
 package starmap
 
 import (
+    "image"
+    "os"
+    "bufio"
 	"geom"
 	"net/http"
 	"strconv"
 	"strings"
 	"text/template"
 )
+
+var chars image.Image
+var charsErr error
 
 var data Stardata
 var dataErr error
@@ -22,8 +28,22 @@ func init() {
 	http.HandleFunc("/", handler)
 	data, dataErr = LoadData("data/bright.tsv")
     constelData, constelErr = LoadConstellations("data/consts")
+    chars, charsErr = loadChars()
 	featureTemplate, templateErr =
 		template.ParseFiles("templates/getfeatureinfo.template")
+}
+
+func loadChars() (image.Image, error) {
+    f, err := os.Open("data/chars.png")
+    if err != nil {
+        return nil, err
+    }
+    defer f.Close()
+    rval, _, err := image.Decode(bufio.NewReader(f))
+    if err != nil {
+        return nil, err
+    }
+    return rval, nil
 }
 
 func doErr(w http.ResponseWriter, err error) {

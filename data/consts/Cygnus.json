@@ -1,5 +1,6 @@
 {
     "Name": "Cygnus",
     "Family": "Hercules",
-    "WktFiles": ["Cygnus.wkt"]
+    "WktFiles": ["Cygnus.wkt"],
+    "labelPoints": [[21.91,53.22]]
 }

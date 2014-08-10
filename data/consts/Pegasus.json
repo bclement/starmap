@@ -1,5 +1,6 @@
 {
     "Name": "Pegasus",
     "Family": "Perseus",
-    "WktFiles": ["left-Pegasus.wkt", "right-Pegasus.wkt"]
+    "WktFiles": ["left-Pegasus.wkt", "right-Pegasus.wkt"],
+    "labelPoints": [[23.88,26.41]]
 }

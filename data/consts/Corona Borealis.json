@@ -1,5 +1,6 @@
 {
     "Name": "Corona Borealis",
     "Family": "Ursa Major",
-    "WktFiles": ["Corona Borealis.wkt"]
+    "WktFiles": ["Corona Borealis.wkt"],
+    "labelPoints": [[16.32,31.07]]
 }

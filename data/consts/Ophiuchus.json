@@ -1,5 +1,6 @@
 {
     "Name": "Ophiuchus",
     "Family": "Hercules",
-    "WktFiles": ["Ophiuchus.wkt"]
+    "WktFiles": ["Ophiuchus.wkt"],
+    "labelPoints": [[18.67,10.94]]
 }

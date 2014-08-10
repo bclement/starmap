@@ -1,5 +1,6 @@
 {
     "Name": "Delphinus",
     "Family": "Heavenly Waters",
-    "WktFiles": ["Delphinus.wkt"]
+    "WktFiles": ["Delphinus.wkt"],
+    "labelPoints": [[21.10, 15.51]]
 }

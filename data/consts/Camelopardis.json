@@ -1,5 +1,6 @@
 {
     "Name": "Camelopardis",
     "Family": "Ursa Major",
-    "WktFiles": ["Camelopardis.wkt"]
+    "WktFiles": ["Camelopardis.wkt"],
+    "labelPoints": [[7.95,76.94]]
 }

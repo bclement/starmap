@@ -1,5 +1,6 @@
 {
     "Name": "Serpens Cauda",
     "Family": "Hercules",
-    "WktFiles": ["Serpens Cauda.wkt"]
+    "WktFiles": ["Serpens Cauda.wkt"],
+    "labelPoints": [[18.27,-12.41]]
 }

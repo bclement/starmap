@@ -1,5 +1,6 @@
 {
     "Name": "Canes Venatici",
     "Family": "Ursa Major",
-    "WktFiles": ["Canes Venatici.wkt"]
+    "WktFiles": ["Canes Venatici.wkt"],
+    "labelPoints": [[13.96,46.10]]
 }

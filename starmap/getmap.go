@@ -67,9 +67,16 @@ func createConstTile(w http.ResponseWriter, width, height int,
 	img := render.CreateTransparent(width, height)
     bbox := geom.NewBBox2D(lower.X(), lower.Y(), upper.X(), upper.Y())
     for _, c := range(constelData) {
-        for _, p := range(c.Geoms) {
+        for i, p := range(c.Geoms) {
             if bbox.Touches(p) {
                 render.RenderPoly(img, p, trans, s)
+                if charsErr == nil && c.LabelPoints != nil &&
+                        len(c.LabelPoints) > i {
+                    labelPoint := c.LabelPoints[i]
+                    color := color.White
+                    pix := trans.TransformXY(labelPoint[0], labelPoint[1])
+                    render.RenderString(img, chars, 10, pix, c.Name, color)
+                }
             }
         }
     }

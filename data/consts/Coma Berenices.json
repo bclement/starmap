@@ -1,5 +1,6 @@
 {
     "Name": "Coma Berenices",
     "Family": "Ursa Major",
-    "WktFiles": ["Coma Berenices.wkt"]
+    "WktFiles": ["Coma Berenices.wkt"],
+    "labelPoints": [[13.51,26.59]]
 }

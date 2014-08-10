@@ -1,5 +1,6 @@
 {
     "Name": "Cepheus",
     "Family": "Perseus",
-    "WktFiles": ["left-Cepheus.wkt", "right-Cepheus.wkt"]
+    "WktFiles": ["left-Cepheus.wkt", "right-Cepheus.wkt"],
+    "labelPoints": [[23.58,82.30],[3.62,86.61]]
 }
