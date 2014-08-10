@@ -1,5 +1,6 @@
 {
     "Name": "Libra",
     "Family": "Zodiac",
-    "WktFiles": ["Libra.wkt"]
+    "WktFiles": ["Libra.wkt"],
+    "LabelPoints": [[15.94,-10.94]]
 }

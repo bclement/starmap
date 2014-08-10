@@ -1,5 +1,6 @@
 {
     "Name": "Circinus",
     "Family": "La Caille",
-    "WktFiles": ["Circinus.wkt"]
+    "WktFiles": ["Circinus.wkt"],
+    "LabelPoints": [[14.82,-65.79]]
 }

@@ -1,5 +1,6 @@
 {
     "Name": "Microscopium",
     "Family": "La Caille",
-    "WktFiles": ["Microscopium.wkt"]
+    "WktFiles": ["Microscopium.wkt"],
+    "LabelPoints": [[21.39,-28.61]]
 } 

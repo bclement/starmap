@@ -1,5 +1,6 @@
 {
     "Name": "Canis Major",
     "Family": "Orion",
-    "WktFiles": ["Canis Major.wkt"]
+    "WktFiles": ["Canis Major.wkt"],
+    "LabelPoints": [[7.96,8.48]]
 }

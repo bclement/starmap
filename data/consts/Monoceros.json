@@ -1,5 +1,6 @@
 {
     "Name": "Monoceros",
     "Family": "Orion",
-    "WktFiles": ["Monoceros.wkt"]
+    "WktFiles": ["Monoceros.wkt"],
+    "LabelPoints": [[8.08,-1.71]]
 }

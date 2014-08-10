@@ -1,5 +1,6 @@
 {
     "Name": "Antila",
     "Family": "La Caille",
-    "WktFiles": ["Antila.wkt"]
+    "WktFiles": ["Antila.wkt"],
+    "LabelPoints": [[10.85,-33.09]]
 }

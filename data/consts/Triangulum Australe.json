@@ -1,5 +1,6 @@
 {
     "Name": "Triangulum Australe",
     "Family": "Hercules",
-    "WktFiles": ["Triangulum Australe.wkt"]
+    "WktFiles": ["Triangulum Australe.wkt"],
+    "LabelPoints": [[17.00, -65.87]]
 }

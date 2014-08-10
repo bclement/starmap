@@ -1,5 +1,6 @@
 {
     "Name": "Ara",
     "Family": "Hercules",
-    "WktFiles": ["Ara.wkt"]
+    "WktFiles": ["Ara.wkt"],
+    "LabelPoints": [[18.05,-46.80]]
 }

@@ -1,5 +1,6 @@
 {
     "Name": "Telescopium",
     "Family": "La Caille",
-    "WktFiles": ["Telescopium.wkt"]
+    "WktFiles": ["Telescopium.wkt"],
+    "LabelPoints": [[20.40,-46.36]]
 }

@@ -1,5 +1,6 @@
 {
     "Name": "Eridanus",
     "Family": "Heavenly Waters",
-    "WktFiles": ["Eridanus.wkt"]
+    "WktFiles": ["Eridanus.wkt"],
+    "LabelPoints": [[4.91,-5.23]]
 }

@@ -1,5 +1,6 @@
 {
     "Name": "Orion",
     "Family": "Orion",
-    "WktFiles": ["Orion.wkt"]
+    "WktFiles": ["Orion.wkt"],
+    "LabelPoints": [[6.19,11.47]]
 }

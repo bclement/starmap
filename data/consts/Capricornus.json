@@ -1,5 +1,6 @@
 {
     "Name": "Capricornus",
     "Family": "Zodiac",
-    "WktFiles": ["Capricornus.wkt"]
+    "WktFiles": ["Capricornus.wkt"],
+    "LabelPoints": [[21.90,-17.45]]
 }

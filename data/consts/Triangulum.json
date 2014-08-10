@@ -1,5 +1,6 @@
 {
     "Name": "Triangulum",
     "Family": "Hercules",
-    "WktFiles": ["Triangulum.wkt"]
+    "WktFiles": ["Triangulum.wkt"],
+    "LabelPoints": [[2.45,34.32]]
 }

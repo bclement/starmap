@@ -1,5 +1,6 @@
 {
     "Name": "Apus",
     "Family": "Bayer",
-    "WktFiles": ["Apus.wkt"]
+    "WktFiles": ["Apus.wkt"],
+    "LabelPoints": [[18.02, -71.67]]
 }

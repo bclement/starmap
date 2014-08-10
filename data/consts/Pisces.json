@@ -1,5 +1,6 @@
 {
     "Name": "Pisces",
     "Family": "Zodiac",
-    "WktFiles": ["left-Pisces.wkt", "right-Pisces.wkt"]
+    "WktFiles": ["left-Pisces.wkt", "right-Pisces.wkt"],
+    "LabelPoints": [[2.03,9.54]]
 }

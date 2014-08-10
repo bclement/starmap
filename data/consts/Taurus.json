@@ -1,5 +1,6 @@
 {
     "Name": "Taurus",
     "Family": "Zodiac",
-    "WktFiles": ["Taurus.wkt"]
+    "WktFiles": ["Taurus.wkt"],
+    "LabelPoints": [[5.67,26.50]]
 }

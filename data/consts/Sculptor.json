@@ -1,5 +1,6 @@
 {
     "Name": "Sculptor",
     "Family": "La Caille",
-    "WktFiles": ["left-Sculptor.wkt", "right-Sculptor.wkt"]
+    "WktFiles": ["left-Sculptor.wkt", "right-Sculptor.wkt"],
+    "LabelPoints": [[23.91,-25.97]]
 }

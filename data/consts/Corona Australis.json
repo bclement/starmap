@@ -1,5 +1,6 @@
 {
     "Name": "Corona Australis",
     "Family": "Hercules",
-    "WktFiles": ["Corona Australis.wkt"]
+    "WktFiles": ["Corona Australis.wkt"],
+    "LabelPoints": [[19.23,-38.10]]
 }

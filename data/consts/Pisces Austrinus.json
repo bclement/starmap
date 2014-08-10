@@ -1,5 +1,6 @@
 {
     "Name": "Pisces Austrinus",
     "Family": "Heavenly Waters",
-    "WktFiles": ["Pisces Austrinus.wkt"]
+    "WktFiles": ["Pisces Austrinus.wkt"],
+    "LabelPoints": [[23.05,-25.62]]
 }

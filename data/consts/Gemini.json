@@ -1,5 +1,6 @@
 {
     "Name": "Gemini",
     "Family": "Zodiac",
-    "WktFiles": ["Gemini.wkt"]
+    "WktFiles": ["Gemini.wkt"],
+    "LabelPoints": [[7.79,26.32]]
 }
