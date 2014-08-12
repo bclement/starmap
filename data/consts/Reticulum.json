@@ -1,5 +1,6 @@
 {
     "Name": "Reticulum",
     "Family": "La Caille",
-    "WktFiles": ["Reticulum.wkt"]
+    "WktFiles": ["Reticulum.wkt"],
+    "LabelPoints": [[4.52,-60.12]]
 }

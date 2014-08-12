@@ -1,5 +1,6 @@
 {
     "Name": "Hydrus",
     "Family": "Bayer",
-    "WktFiles": ["Hydrus.wkt"]
+    "WktFiles": ["Hydrus.wkt"],
+    "LabelPoints": [[4.5,-68.29]]
 }

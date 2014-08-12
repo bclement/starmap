@@ -1,5 +1,6 @@
 {
     "Name": "Caelum",
     "Family": "La Caille",
-    "WktFiles": ["Caelum.wkt"]
+    "WktFiles": ["Caelum.wkt"],
+    "LabelPoints": [[5.00,-39.97]]
 }

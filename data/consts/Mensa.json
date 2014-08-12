@@ -1,5 +1,6 @@
 {
     "Name": "Mensa",
     "Family": "La Caille",
-    "WktFiles": ["Mensa.wkt"]
+    "WktFiles": ["Mensa.wkt"],
+    "LabelPoints": [[7.32,-76.46]]
 }

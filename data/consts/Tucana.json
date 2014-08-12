@@ -2,5 +2,5 @@
     "Name": "Tucana",
     "Family": "Bayer",
     "WktFiles": ["left-Tucana.wkt", "right-Tucana.wkt"],
-    "LabelPoints": [[23.89,-59.02]]
+    "LabelPoints": [[23.89,-59.02],[1.33,-58.80]]
 }

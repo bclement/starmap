@@ -1,5 +1,6 @@
 {
     "Name": "Pyxis",
     "Family": "Heavenly Waters",
-    "WktFiles": ["Pyxis.wkt"]
+    "WktFiles": ["Pyxis.wkt"],
+    "LabelPoints": [[9.13,-20.30]]
 }

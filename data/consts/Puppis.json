@@ -1,5 +1,6 @@
 {
     "Name": "Puppis",
     "Family": "Heavenly Waters",
-    "WktFiles": ["Puppis.wkt"]
+    "WktFiles": ["Puppis.wkt"],
+    "LabelPoints": [[8.35,-34.63]]
 }

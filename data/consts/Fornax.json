@@ -1,5 +1,6 @@
 {
     "Name": "Fornax",
     "Family": "La Caille",
-    "WktFiles": ["Fornax.wkt"]
+    "WktFiles": ["Fornax.wkt"],
+    "LabelPoints": [[3.76,-24.40]]
 }

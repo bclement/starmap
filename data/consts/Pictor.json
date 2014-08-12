@@ -1,5 +1,6 @@
 {
     "Name": "Pictor",
     "Family": "La Caille",
-    "WktFiles": ["Pictor.wkt"]
+    "WktFiles": ["Pictor.wkt"],
+    "LabelPoints": [[5.98,-44.91]]
 }

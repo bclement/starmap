@@ -1,5 +1,6 @@
 {
     "Name": "Phoenix",
     "Family": "Bayer",
-    "WktFiles": ["left-Phoenix.wkt","right-Phoenix.wkt"]
+    "WktFiles": ["left-Phoenix.wkt","right-Phoenix.wkt"],
+    "LabelPoints": [[-1,0],[2.30,-41.04]]
 }

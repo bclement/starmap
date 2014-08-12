@@ -1,5 +1,6 @@
 {
     "Name": "Horologium",
     "Family": "La Caille",
-    "WktFiles": ["Horologium.wkt"]
+    "WktFiles": ["Horologium.wkt"],
+    "LabelPoints": [[3.84,-48.96]]
 }

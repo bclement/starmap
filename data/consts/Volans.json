@@ -1,5 +1,6 @@
 {
     "Name": "Volans",
     "Family": "Bayer",
-    "WktFiles": ["Volans.wkt"]
+    "WktFiles": ["Volans.wkt"],
+    "LabelPoints": [[9.01,-65.65]]
 }
