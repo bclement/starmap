@@ -1,6 +1,22 @@
 {
-    "Name": "Sculptor",
-    "Family": "La Caille",
-    "WktFiles": ["left-Sculptor.wkt", "right-Sculptor.wkt"],
-    "LabelPoints": [[23.91,-25.97],[1.69,-26.02]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.91, 
+                -25.97
+            ], 
+            "WktFile": "left-Sculptor.wkt", 
+            "MaxScale": 0.006
+        }, 
+        {
+            "LabelPoint": [
+                1.69, 
+                -26.02
+            ], 
+            "WktFile": "right-Sculptor.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Sculptor", 
+    "Family": "La Caille"
 }

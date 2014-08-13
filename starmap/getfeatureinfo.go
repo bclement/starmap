@@ -93,8 +93,8 @@ func starFeatures(point *geom.Point) []*Feature {
 func constelFeatures(point *geom.Point) []*Feature {
     rval := make([]*Feature, 0, 2)
     for _, c := range(constelData) {
-        for _, p := range(c.Geoms) {
-            if p.Contains(point) {
+        for _, pi := range(c.PolyInfos) {
+            if pi.Geom.Contains(point) {
                 rval = append(rval, &Feature{"constellation",
                     constAsParams(c)})
             }

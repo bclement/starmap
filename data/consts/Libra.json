@@ -1,6 +1,14 @@
 {
-    "Name": "Libra",
-    "Family": "Zodiac",
-    "WktFiles": ["Libra.wkt"],
-    "LabelPoints": [[15.94,-10.94]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                15.94, 
+                -10.94
+            ], 
+            "WktFile": "Libra.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Libra", 
+    "Family": "Zodiac"
 }

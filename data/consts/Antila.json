@@ -1,6 +1,14 @@
 {
-    "Name": "Antila",
-    "Family": "La Caille",
-    "WktFiles": ["Antila.wkt"],
-    "LabelPoints": [[10.85,-33.09]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                10.85, 
+                -33.09
+            ], 
+            "WktFile": "Antila.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Antila", 
+    "Family": "La Caille"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Corona Borealis",
-    "Family": "Ursa Major",
-    "WktFiles": ["Corona Borealis.wkt"],
-    "labelPoints": [[16.32,31.07]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                16.32, 
+                31.07
+            ], 
+            "WktFile": "Corona Borealis.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Corona Borealis", 
+    "Family": "Ursa Major"
 }

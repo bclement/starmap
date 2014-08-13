@@ -1,6 +1,14 @@
 {
-    "Name": "Crater",
-    "Family": "Hercules",
-    "WktFiles": ["Crater.wkt"],
-    "LabelPoints": [[11.85,-8.39]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                11.85, 
+                -8.39
+            ], 
+            "WktFile": "Crater.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Crater", 
+    "Family": "Hercules"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Cancer",
-    "Family": "Zodiac",
-    "WktFiles": ["Cancer.wkt"],
-    "LabelPoints": [[9.29,31.86]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                9.29, 
+                31.86
+            ], 
+            "WktFile": "Cancer.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Cancer", 
+    "Family": "Zodiac"
 }

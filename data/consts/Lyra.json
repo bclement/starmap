@@ -1,6 +1,14 @@
 {
-    "Name": "Lyra",
-    "Family": "Hercules",
-    "WktFiles": ["Lyra.wkt"],
-    "labelPoints": [[19.40,42.50]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                19.4, 
+                42.5
+            ], 
+            "WktFile": "Lyra.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Lyra", 
+    "Family": "Hercules"
 }

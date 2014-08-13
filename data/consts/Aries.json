@@ -1,6 +1,14 @@
 {
-    "Name": "Aries",
-    "Family": "Zodiac",
-    "WktFiles": ["Aries.wkt"],
-    "LabelPoints": [[3.42,24.48]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                3.42, 
+                24.48
+            ], 
+            "WktFile": "Aries.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Aries", 
+    "Family": "Zodiac"
 }

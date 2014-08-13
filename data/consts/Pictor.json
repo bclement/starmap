@@ -1,6 +1,14 @@
 {
-    "Name": "Pictor",
-    "Family": "La Caille",
-    "WktFiles": ["Pictor.wkt"],
-    "LabelPoints": [[5.98,-44.91]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                5.98, 
+                -44.91
+            ], 
+            "WktFile": "Pictor.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Pictor", 
+    "Family": "La Caille"
 }

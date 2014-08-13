@@ -1,6 +1,14 @@
 {
-    "Name": "Norma",
-    "Family": "La Caille",
-    "WktFiles": ["Norma.wkt"],
-    "LabelPoints": [[16.49,-49.53]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                16.49, 
+                -49.53
+            ], 
+            "WktFile": "Norma.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Norma", 
+    "Family": "La Caille"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Aquarius",
-    "Family": "Zodiac",
-    "WktFiles": ["Aquarius.wkt"],
-    "LabelPoints": [[23.82,-5.41]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.82, 
+                -5.41
+            ], 
+            "WktFile": "Aquarius.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Aquarius", 
+    "Family": "Zodiac"
 }

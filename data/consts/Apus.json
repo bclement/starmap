@@ -1,6 +1,14 @@
 {
-    "Name": "Apus",
-    "Family": "Bayer",
-    "WktFiles": ["Apus.wkt"],
-    "LabelPoints": [[18.02, -71.67]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                18.02, 
+                -71.67
+            ], 
+            "WktFile": "Apus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Apus", 
+    "Family": "Bayer"
 }

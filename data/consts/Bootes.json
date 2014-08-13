@@ -1,6 +1,14 @@
 {
-    "Name": "Bootes",
-    "Family": "Ursa Major",
-    "WktFiles": ["Bootes.wkt"],
-    "labelPoints": [[15.66,50.84]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                15.66, 
+                50.84
+            ], 
+            "WktFile": "Bootes.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Bootes", 
+    "Family": "Ursa Major"
 }

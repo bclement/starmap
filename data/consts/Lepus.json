@@ -1,6 +1,14 @@
 {
-    "Name": "Lepus",
-    "Family": "Orion",
-    "WktFiles": ["Lepus.wkt"],
-    "LabelPoints": [[6.12,-12.13]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                6.12, 
+                -12.13
+            ], 
+            "WktFile": "Lepus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Lepus", 
+    "Family": "Orion"
 }

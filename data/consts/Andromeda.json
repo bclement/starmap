@@ -1,6 +1,22 @@
 {
-    "Name": "Andromeda",
-    "Family": "Perseus",
-    "WktFiles": ["left-Andromeda.wkt", "right-Andromeda.wkt"],
-    "labelPoints": [[23.92,47.07],[1.96,45.22]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.92, 
+                47.07
+            ], 
+            "WktFile": "left-Andromeda.wkt", 
+            "MaxScale": 0.006
+        }, 
+        {
+            "LabelPoint": [
+                1.96, 
+                45.22
+            ], 
+            "WktFile": "right-Andromeda.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Andromeda", 
+    "Family": "Perseus"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Virgo",
-    "Family": "Zodiac",
-    "WktFiles": ["Virgo.wkt"],
-    "labelPoints": [[14.61,5.58]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                14.61, 
+                5.58
+            ], 
+            "WktFile": "Virgo.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Virgo", 
+    "Family": "Zodiac"
 }

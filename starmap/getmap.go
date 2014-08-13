@@ -2,6 +2,7 @@ package starmap
 
 import (
     "strings"
+    "math"
 	"appengine"
 	"appengine/memcache"
 	"bytes"
@@ -62,20 +63,21 @@ func createConstTile(w http.ResponseWriter, width, height int,
     if constelErr != nil {
         return nil, constelErr
     }
+    scale := math.Abs(upper.X() - lower.X()) / float64(width)
+    txtColor := color.White
     s := style.NewPolyStyle(1, color.White)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
 	img := render.CreateTransparent(width, height)
     bbox := geom.NewBBox2D(lower.X(), lower.Y(), upper.X(), upper.Y())
     for _, c := range(constelData) {
-        for i, p := range(c.Geoms) {
-            if bbox.Touches(p) {
-                render.RenderPoly(img, p, trans, s)
-                if charsErr == nil && c.LabelPoints != nil &&
-                        len(c.LabelPoints) > i {
-                    labelPoint := c.LabelPoints[i]
-                    color := color.White
+        for _, pi := range(c.PolyInfos) {
+            if bbox.Touches(pi.Geom) {
+                render.RenderPoly(img, pi.Geom, trans, s)
+                if charsErr == nil && pi.LabelPoint != nil &&
+                        pi.MaxScale > scale {
+                    labelPoint := pi.LabelPoint
                     pix := trans.TransformXY(labelPoint[0], labelPoint[1])
-                    render.RenderString(img, chars, 10, pix, c.Name, color)
+                    render.RenderString(img, chars, 10, pix, c.Name, txtColor)
                 }
             }
         }

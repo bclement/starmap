@@ -1,6 +1,14 @@
 {
-    "Name": "Draco",
-    "Family": "Ursa Major",
-    "WktFiles": ["Draco.wkt"],
-    "labelPoints": [[18.81,65.17]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                18.81, 
+                65.17
+            ], 
+            "WktFile": "Draco.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Draco", 
+    "Family": "Ursa Major"
 }

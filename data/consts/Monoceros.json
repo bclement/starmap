@@ -1,6 +1,14 @@
 {
-    "Name": "Monoceros",
-    "Family": "Orion",
-    "WktFiles": ["Monoceros.wkt"],
-    "LabelPoints": [[8.08,-1.71]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                8.08, 
+                -1.71
+            ], 
+            "WktFile": "Monoceros.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Monoceros", 
+    "Family": "Orion"
 }

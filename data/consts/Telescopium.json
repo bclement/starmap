@@ -1,6 +1,14 @@
 {
-    "Name": "Telescopium",
-    "Family": "La Caille",
-    "WktFiles": ["Telescopium.wkt"],
-    "LabelPoints": [[20.40,-46.36]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                20.4, 
+                -46.36
+            ], 
+            "WktFile": "Telescopium.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Telescopium", 
+    "Family": "La Caille"
 }

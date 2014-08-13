@@ -1,6 +1,14 @@
 {
-    "Name": "Canis Minor",
-    "Family": "Orion",
-    "WktFiles": ["Canis Minor.wkt"],
-    "LabelPoints": [[7.98,8.88]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                7.98, 
+                8.88
+            ], 
+            "WktFile": "Canis Minor.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Canis Minor", 
+    "Family": "Orion"
 }

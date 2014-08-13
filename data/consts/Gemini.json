@@ -1,6 +1,14 @@
 {
-    "Name": "Gemini",
-    "Family": "Zodiac",
-    "WktFiles": ["Gemini.wkt"],
-    "LabelPoints": [[7.79,26.32]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                7.79, 
+                26.32
+            ], 
+            "WktFile": "Gemini.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Gemini", 
+    "Family": "Zodiac"
 }

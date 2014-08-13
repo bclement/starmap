@@ -1,6 +1,14 @@
 {
-    "Name": "Leo",
-    "Family": "Zodiac",
-    "WktFiles": ["Leo.wkt"],
-    "labelPoints": [[11.82,20.87]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                11.82, 
+                20.87
+            ], 
+            "WktFile": "Leo.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Leo", 
+    "Family": "Zodiac"
 }

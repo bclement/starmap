@@ -1,6 +1,14 @@
 {
-    "Name": "Crux",
-    "Family": "Hercules",
-    "WktFiles": ["Crux.wkt"],
-    "LabelPoints": [[12.88,-56.69]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                12.88, 
+                -56.69
+            ], 
+            "WktFile": "Crux.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Crux", 
+    "Family": "Hercules"
 }

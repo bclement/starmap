@@ -1,6 +1,14 @@
 {
-    "Name": "Sagitta",
-    "Family": "Hercules",
-    "WktFiles": ["Sagitta.wkt"],
-    "labelPoints": [[20.29,18.85]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                20.29, 
+                18.85
+            ], 
+            "WktFile": "Sagitta.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Sagitta", 
+    "Family": "Hercules"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Reticulum",
-    "Family": "La Caille",
-    "WktFiles": ["Reticulum.wkt"],
-    "LabelPoints": [[4.52,-60.12]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                4.52, 
+                -60.12
+            ], 
+            "WktFile": "Reticulum.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Reticulum", 
+    "Family": "La Caille"
 }

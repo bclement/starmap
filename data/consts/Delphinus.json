@@ -1,6 +1,14 @@
 {
-    "Name": "Delphinus",
-    "Family": "Heavenly Waters",
-    "WktFiles": ["Delphinus.wkt"],
-    "labelPoints": [[21.10, 15.51]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                21.1, 
+                15.51
+            ], 
+            "WktFile": "Delphinus.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Delphinus", 
+    "Family": "Heavenly Waters"
 }

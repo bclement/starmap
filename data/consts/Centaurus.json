@@ -1,6 +1,14 @@
 {
-    "Name": "Centaurus",
-    "Family": "Hercules",
-    "WktFiles": ["Centaurus.wkt"],
-    "LabelPoints": [[14.12,-37.84]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                14.12, 
+                -37.84
+            ], 
+            "WktFile": "Centaurus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Centaurus", 
+    "Family": "Hercules"
 }

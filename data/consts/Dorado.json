@@ -1,6 +1,14 @@
 {
-    "Name": "Dorado",
-    "Family": "Bayer",
-    "WktFiles": ["Dorado.wkt"],
-    "LabelPoints": [[6.52,-65.13]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                6.52, 
+                -65.13
+            ], 
+            "WktFile": "Dorado.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Dorado", 
+    "Family": "Bayer"
 }

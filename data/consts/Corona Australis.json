@@ -1,6 +1,14 @@
 {
-    "Name": "Corona Australis",
-    "Family": "Hercules",
-    "WktFiles": ["Corona Australis.wkt"],
-    "LabelPoints": [[19.23,-38.10]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                19.23, 
+                -38.1
+            ], 
+            "WktFile": "Corona Australis.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Corona Australis", 
+    "Family": "Hercules"
 }

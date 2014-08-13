@@ -1,6 +1,14 @@
 {
-    "Name": "Pyxis",
-    "Family": "Heavenly Waters",
-    "WktFiles": ["Pyxis.wkt"],
-    "LabelPoints": [[9.13,-20.30]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                9.13, 
+                -20.3
+            ], 
+            "WktFile": "Pyxis.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Pyxis", 
+    "Family": "Heavenly Waters"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Carina",
-    "Family": "Heavenly Waters",
-    "WktFiles": ["Carina.wkt"],
-    "LabelPoints": [[11.23,-58.53]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                11.23, 
+                -58.53
+            ], 
+            "WktFile": "Carina.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Carina", 
+    "Family": "Heavenly Waters"
 }

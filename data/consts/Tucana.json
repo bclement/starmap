@@ -1,6 +1,22 @@
 {
-    "Name": "Tucana",
-    "Family": "Bayer",
-    "WktFiles": ["left-Tucana.wkt", "right-Tucana.wkt"],
-    "LabelPoints": [[23.89,-59.02],[1.33,-58.80]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.89, 
+                -59.02
+            ], 
+            "WktFile": "left-Tucana.wkt", 
+            "MaxScale": 0.012
+        }, 
+        {
+            "LabelPoint": [
+                1.33, 
+                -58.8
+            ], 
+            "WktFile": "right-Tucana.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Tucana", 
+    "Family": "Bayer"
 }

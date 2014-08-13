@@ -1,7 +1,22 @@
 {
-    "Name": "Cassiopeia",
-    "Family": "Perseus",
-    "WktFiles": ["left-Cassiopeia.wkt","right-Cassiopeia.wkt"],
-    "labelPoints": [[23.95,58.49],[3.15,73.08]]
-
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.95, 
+                58.49
+            ], 
+            "WktFile": "left-Cassiopeia.wkt", 
+            "MaxScale": 0.006
+        }, 
+        {
+            "LabelPoint": [
+                3.15, 
+                73.08
+            ], 
+            "WktFile": "right-Cassiopeia.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Cassiopeia", 
+    "Family": "Perseus"
 }

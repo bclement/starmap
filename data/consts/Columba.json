@@ -1,6 +1,14 @@
 {
-    "Name": "Columba",
-    "Family": "Heavenly Waters",
-    "WktFiles": ["Columba.wkt"],
-    "LabelPoints": [[6.12,-28.30]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                6.12, 
+                -28.3
+            ], 
+            "WktFile": "Columba.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Columba", 
+    "Family": "Heavenly Waters"
 }

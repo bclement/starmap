@@ -1,6 +1,14 @@
 {
-    "Name": "Sagittarius",
-    "Family": "Zodiac",
-    "WktFiles": ["Sagittarius.wkt"],
-    "LabelPoints": [[20.03,-17.53]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                20.03, 
+                -17.53
+            ], 
+            "WktFile": "Sagittarius.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Sagittarius", 
+    "Family": "Zodiac"
 }

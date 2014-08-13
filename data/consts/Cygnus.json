@@ -1,6 +1,14 @@
 {
-    "Name": "Cygnus",
-    "Family": "Hercules",
-    "WktFiles": ["Cygnus.wkt"],
-    "labelPoints": [[21.91,53.22]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                21.91, 
+                53.22
+            ], 
+            "WktFile": "Cygnus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Cygnus", 
+    "Family": "Hercules"
 }

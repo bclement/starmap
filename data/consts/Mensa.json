@@ -1,6 +1,14 @@
 {
-    "Name": "Mensa",
-    "Family": "La Caille",
-    "WktFiles": ["Mensa.wkt"],
-    "LabelPoints": [[7.32,-76.46]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                7.32, 
+                -76.46
+            ], 
+            "WktFile": "Mensa.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Mensa", 
+    "Family": "La Caille"
 }

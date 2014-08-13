@@ -1,6 +1,14 @@
 {
-    "Name": "Coma Berenices",
-    "Family": "Ursa Major",
-    "WktFiles": ["Coma Berenices.wkt"],
-    "labelPoints": [[13.51,26.59]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                13.51, 
+                26.59
+            ], 
+            "WktFile": "Coma Berenices.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Coma Berenices", 
+    "Family": "Ursa Major"
 }

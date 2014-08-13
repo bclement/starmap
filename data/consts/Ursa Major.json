@@ -1,6 +1,14 @@
 {
-    "Name": "Ursa Major",
-    "Family": "Ursa Major",
-    "WktFiles": ["Ursa Major.wkt"],
-    "labelPoints": [[11.96,62.62]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                11.96, 
+                62.62
+            ], 
+            "WktFile": "Ursa Major.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Ursa Major", 
+    "Family": "Ursa Major"
 }

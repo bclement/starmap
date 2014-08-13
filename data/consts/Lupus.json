@@ -1,6 +1,14 @@
 {
-    "Name": "Lupus",
-    "Family": "Hercules",
-    "WktFiles": ["Lupus.wkt"],
-    "LabelPoints": [[15.76,-43.29]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                15.76, 
+                -43.29
+            ], 
+            "WktFile": "Lupus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Lupus", 
+    "Family": "Hercules"
 }

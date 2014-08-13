@@ -1,6 +1,14 @@
 {
-    "Name": "Eridanus",
-    "Family": "Heavenly Waters",
-    "WktFiles": ["Eridanus.wkt"],
-    "LabelPoints": [[4.91,-5.23]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                4.91, 
+                -5.23
+            ], 
+            "WktFile": "Eridanus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Eridanus", 
+    "Family": "Heavenly Waters"
 }

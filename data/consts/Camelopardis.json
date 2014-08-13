@@ -1,6 +1,14 @@
 {
-    "Name": "Camelopardis",
-    "Family": "Ursa Major",
-    "WktFiles": ["Camelopardis.wkt"],
-    "labelPoints": [[7.95,76.94]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                7.95, 
+                76.94
+            ], 
+            "WktFile": "Camelopardis.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Camelopardis", 
+    "Family": "Ursa Major"
 }

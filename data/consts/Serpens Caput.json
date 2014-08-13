@@ -1,6 +1,14 @@
 {
-    "Name": "Serpens Caput",
-    "Family": "Hercules",
-    "WktFiles": ["Serpens Caput.wkt"],
-    "labelPoints": [[16.31, 2.68]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                16.31, 
+                2.68
+            ], 
+            "WktFile": "Serpens Caput.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Serpens Caput", 
+    "Family": "Hercules"
 }

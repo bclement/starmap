@@ -1,6 +1,14 @@
 {
-    "Name": "Caelum",
-    "Family": "La Caille",
-    "WktFiles": ["Caelum.wkt"],
-    "LabelPoints": [[5.00,-39.97]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                5.0, 
+                -39.97
+            ], 
+            "WktFile": "Caelum.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Caelum", 
+    "Family": "La Caille"
 }

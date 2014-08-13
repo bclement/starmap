@@ -1,6 +1,14 @@
 {
-    "Name": "Auriga",
-    "Family": "Perseus",
-    "WktFiles": ["Auriga.wkt"],
-    "labelPoints": [[6.84,48.12]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                6.84, 
+                48.12
+            ], 
+            "WktFile": "Auriga.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Auriga", 
+    "Family": "Perseus"
 }

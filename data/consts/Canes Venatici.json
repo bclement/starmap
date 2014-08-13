@@ -1,6 +1,14 @@
 {
-    "Name": "Canes Venatici",
-    "Family": "Ursa Major",
-    "WktFiles": ["Canes Venatici.wkt"],
-    "labelPoints": [[13.96,46.10]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                13.96, 
+                46.1
+            ], 
+            "WktFile": "Canes Venatici.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Canes Venatici", 
+    "Family": "Ursa Major"
 }

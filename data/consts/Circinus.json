@@ -1,6 +1,14 @@
 {
-    "Name": "Circinus",
-    "Family": "La Caille",
-    "WktFiles": ["Circinus.wkt"],
-    "LabelPoints": [[14.82,-65.79]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                14.82, 
+                -65.79
+            ], 
+            "WktFile": "Circinus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Circinus", 
+    "Family": "La Caille"
 }

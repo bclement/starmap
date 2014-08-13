@@ -1,6 +1,14 @@
 {
-    "Name": "Orion",
-    "Family": "Orion",
-    "WktFiles": ["Orion.wkt"],
-    "LabelPoints": [[6.19,11.47]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                6.19, 
+                11.47
+            ], 
+            "WktFile": "Orion.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Orion", 
+    "Family": "Orion"
 }

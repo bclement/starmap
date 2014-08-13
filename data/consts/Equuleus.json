@@ -1,6 +1,14 @@
 {
-    "Name": "Equuleus",
-    "Family": "Heavenly Waters",
-    "WktFiles": ["Equuleus.wkt"],
-    "labelPoints": [[21.41,6.02]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                21.41, 
+                6.02
+            ], 
+            "WktFile": "Equuleus.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Equuleus", 
+    "Family": "Heavenly Waters"
 }

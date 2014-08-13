@@ -1,6 +1,14 @@
 {
-    "Name": "Serpens Cauda",
-    "Family": "Hercules",
-    "WktFiles": ["Serpens Cauda.wkt"],
-    "labelPoints": [[18.27,-12.41]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                18.27, 
+                -12.41
+            ], 
+            "WktFile": "Serpens Cauda.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Serpens Cauda", 
+    "Family": "Hercules"
 }

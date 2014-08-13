@@ -1,6 +1,14 @@
 {
-    "Name": "Microscopium",
-    "Family": "La Caille",
-    "WktFiles": ["Microscopium.wkt"],
-    "LabelPoints": [[21.39,-28.61]]
-} 
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                21.39, 
+                -28.61
+            ], 
+            "WktFile": "Microscopium.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Microscopium", 
+    "Family": "La Caille"
+}

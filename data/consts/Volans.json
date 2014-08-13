@@ -1,6 +1,14 @@
 {
-    "Name": "Volans",
-    "Family": "Bayer",
-    "WktFiles": ["Volans.wkt"],
-    "LabelPoints": [[9.01,-65.65]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                9.01, 
+                -65.65
+            ], 
+            "WktFile": "Volans.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Volans", 
+    "Family": "Bayer"
 }

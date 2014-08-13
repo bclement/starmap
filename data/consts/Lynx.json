@@ -1,6 +1,14 @@
 {
-    "Name": "Lynx",
-    "Family": "Ursa Major",
-    "WktFiles": ["Lynx.wkt"],
-    "labelPoints": [[8.41,57.52]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                8.41, 
+                57.52
+            ], 
+            "WktFile": "Lynx.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Lynx", 
+    "Family": "Ursa Major"
 }

@@ -125,7 +125,7 @@ func rfpart(x float64) float64 {
 
 /* draw point x,y using grayscale c (0..1) */
 func plot(img draw.Image, x, y int, c float64) {
-    gray := uint8(255 * c)
+    gray := uint8(128 * c)
     color := color.RGBA{gray, gray, gray, 255}
     img.Set(x, y, color)
 }

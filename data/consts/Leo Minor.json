@@ -1,6 +1,14 @@
 {
-    "Name": "Leo Minor",
-    "Family": "Ursa Major",
-    "WktFiles": ["Leo Minor.wkt"],
-    "labelPoints": [[10.78,38.28]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                10.78, 
+                38.28
+            ], 
+            "WktFile": "Leo Minor.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Leo Minor", 
+    "Family": "Ursa Major"
 }

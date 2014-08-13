@@ -1,6 +1,14 @@
 {
-    "Name": "Taurus",
-    "Family": "Zodiac",
-    "WktFiles": ["Taurus.wkt"],
-    "LabelPoints": [[5.67,26.50]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                5.67, 
+                26.5
+            ], 
+            "WktFile": "Taurus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Taurus", 
+    "Family": "Zodiac"
 }

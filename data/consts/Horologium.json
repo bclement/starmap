@@ -1,6 +1,14 @@
 {
-    "Name": "Horologium",
-    "Family": "La Caille",
-    "WktFiles": ["Horologium.wkt"],
-    "LabelPoints": [[3.84,-48.96]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                3.84, 
+                -48.96
+            ], 
+            "WktFile": "Horologium.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Horologium", 
+    "Family": "La Caille"
 }

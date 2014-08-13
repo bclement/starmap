@@ -1,6 +1,22 @@
 {
-    "Name": "Cetus",
-    "Family": "Perseus",
-    "WktFiles": ["left-Cetus.wkt", "right-Cetus.wkt"],
-    "LabelPoints": [[-1,0],[2.66,-7.34]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                -1, 
+                0
+            ], 
+            "WktFile": "left-Cetus.wkt", 
+            "MaxScale": 0.012
+        }, 
+        {
+            "LabelPoint": [
+                2.66, 
+                -7.34
+            ], 
+            "WktFile": "right-Cetus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Cetus", 
+    "Family": "Perseus"
 }

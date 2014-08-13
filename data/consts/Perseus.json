@@ -1,6 +1,14 @@
 {
-    "Name": "Perseus",
-    "Family": "Perseus",
-    "WktFiles": ["Perseus.wkt"],
-    "labelPoints": [[4.63,50.14]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                4.63, 
+                50.14
+            ], 
+            "WktFile": "Perseus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Perseus", 
+    "Family": "Perseus"
 }

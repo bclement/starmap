@@ -94,7 +94,7 @@ func TestReadPoly(t *testing.T) {
 
 func TestConstFilter(t *testing.T) {
     data, err := LoadConstellations("../data/consts")
-    if err != nil {
+    if err != nil || len(data) < 1 {
         t.Errorf("loading: %v", err)
     }
     s := style.NewPolyStyle(1, color.White)
@@ -104,9 +104,15 @@ func TestConstFilter(t *testing.T) {
     upper := geom.NewPoint2D(0, 90)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
     for _, c := range(data) {
+        if len(c.PolyInfos) < 1 {
+            t.Errorf("Expected poly infos for %v", c.Name)
+        }
 	    img := render.Create(width, height, color.Black)
-        for _, p := range(c.Geoms){
-            render.RenderPoly(img, p, trans, s)
+        for _, pi := range(c.PolyInfos){
+            if len(pi.LabelPoint) != 2 {
+                t.Errorf("Expected label points for %v", c.Name)
+            }
+            render.RenderPoly(img, pi.Geom, trans, s)
         }
         writeImg(t, img, "/tmp/nexconst/" + c.Name + ".png")
     }

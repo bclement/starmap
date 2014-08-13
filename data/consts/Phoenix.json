@@ -1,6 +1,22 @@
 {
-    "Name": "Phoenix",
-    "Family": "Bayer",
-    "WktFiles": ["left-Phoenix.wkt","right-Phoenix.wkt"],
-    "LabelPoints": [[-1,0],[2.30,-41.04]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                -1, 
+                0
+            ], 
+            "WktFile": "left-Phoenix.wkt", 
+            "MaxScale": 0.012
+        }, 
+        {
+            "LabelPoint": [
+                2.3, 
+                -41.04
+            ], 
+            "WktFile": "right-Phoenix.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Phoenix", 
+    "Family": "Bayer"
 }

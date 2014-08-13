@@ -1,6 +1,14 @@
 {
-    "Name": "Scorpius",
-    "Family": "Zodiac",
-    "WktFiles": ["Scorpius.wkt"],
-    "LabelPoints": [[17.85,-31.42]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                17.85, 
+                -31.42
+            ], 
+            "WktFile": "Scorpius.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Scorpius", 
+    "Family": "Zodiac"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Aquila",
-    "Family": "Hercules",
-    "WktFiles": ["Aquila.wkt"],
-    "labelPoints": [[20.11,12.61]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                20.11, 
+                12.61
+            ], 
+            "WktFile": "Aquila.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Aquila", 
+    "Family": "Hercules"
 }

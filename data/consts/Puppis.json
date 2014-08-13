@@ -1,6 +1,14 @@
 {
-    "Name": "Puppis",
-    "Family": "Heavenly Waters",
-    "WktFiles": ["Puppis.wkt"],
-    "LabelPoints": [[8.35,-34.63]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                8.35, 
+                -34.63
+            ], 
+            "WktFile": "Puppis.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Puppis", 
+    "Family": "Heavenly Waters"
 }

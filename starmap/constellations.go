@@ -20,12 +20,17 @@ const(
     wkt_coord = iota
 )
 
+type PolyInfo struct {
+    WktFile string
+    LabelPoint []float64
+    MaxScale float64
+    Geom *geom.Polygon
+}
+
 type Constellation struct {
     Name string
     Family string
-    WktFiles []string
-    Geoms []*geom.Polygon
-    LabelPoints [][]float64
+    PolyInfos []*PolyInfo
 }
 
 type Constellations []*Constellation
@@ -45,15 +50,15 @@ func LoadConstellations(constDir string) (Constellations, error) {
             if err != nil {
                 return nil, fmt.Errorf("Unable to parse %v: %v", fullPath, err)
             }
-            constel.Geoms = make([]*geom.Polygon, 0, len(constel.WktFiles))
-            for _, wktFile := range(constel.WktFiles) {
+            for i := range(constel.PolyInfos) {
+                wktFile := constel.PolyInfos[i].WktFile
                 fullWktPath := path.Join(constDir, wktFile)
                 poly, err := readWktFile(fullWktPath)
                 if err != nil {
                     return nil, fmt.Errorf("Unable to parse %v: %v",
                         fullWktPath, err)
                 }
-                constel.Geoms = append(constel.Geoms, poly)
+                constel.PolyInfos[i].Geom = poly
             }
             rval = append(rval, constel)
         }

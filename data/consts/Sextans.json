@@ -1,6 +1,14 @@
 {
-    "Name": "Sextans",
-    "Family": "Hercules",
-    "WktFiles": ["Sextans.wkt"],
-    "LabelPoints": [[10.78,4.88]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                10.78, 
+                4.88
+            ], 
+            "WktFile": "Sextans.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Sextans", 
+    "Family": "Hercules"
 }

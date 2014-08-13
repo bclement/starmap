@@ -1,6 +1,14 @@
 {
-    "Name": "Hydrus",
-    "Family": "Bayer",
-    "WktFiles": ["Hydrus.wkt"],
-    "LabelPoints": [[4.5,-68.29]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                4.5, 
+                -68.29
+            ], 
+            "WktFile": "Hydrus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Hydrus", 
+    "Family": "Bayer"
 }

@@ -1,6 +1,22 @@
 {
-    "Name": "Cepheus",
-    "Family": "Perseus",
-    "WktFiles": ["left-Cepheus.wkt", "right-Cepheus.wkt"],
-    "labelPoints": [[23.58,82.30],[3.62,86.61]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.58, 
+                82.3
+            ], 
+            "WktFile": "left-Cepheus.wkt", 
+            "MaxScale": 0.012
+        }, 
+        {
+            "LabelPoint": [
+                3.62, 
+                86.61
+            ], 
+            "WktFile": "right-Cepheus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Cepheus", 
+    "Family": "Perseus"
 }

@@ -1,6 +1,14 @@
 {
-    "Name": "Grus",
-    "Family": "Bayer",
-    "WktFiles": ["Grus.wkt"],
-    "LabelPoints": [[23.37,-38.01]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.37, 
+                -38.01
+            ], 
+            "WktFile": "Grus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Grus", 
+    "Family": "Bayer"
 }

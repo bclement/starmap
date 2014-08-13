@@ -1,6 +1,14 @@
 {
-    "Name": "Musca",
-    "Family": "Bayer",
-    "WktFiles": ["Musca.wkt"],
-    "LabelPoints": [[13.78,-66.53]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                13.78, 
+                -66.53
+            ], 
+            "WktFile": "Musca.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Musca", 
+    "Family": "Bayer"
 }

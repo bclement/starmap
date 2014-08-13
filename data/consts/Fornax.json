@@ -1,6 +1,14 @@
 {
-    "Name": "Fornax",
-    "Family": "La Caille",
-    "WktFiles": ["Fornax.wkt"],
-    "LabelPoints": [[3.76,-24.40]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                3.76, 
+                -24.4
+            ], 
+            "WktFile": "Fornax.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Fornax", 
+    "Family": "La Caille"
 }

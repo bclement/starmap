@@ -1,6 +1,14 @@
 {
-    "Name": "Chamaeleon",
-    "Family": "Bayer",
-    "WktFiles": ["Chamaeleon.wkt"],
-    "LabelPoints": [[13.78,-76.55]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                13.78, 
+                -76.55
+            ], 
+            "WktFile": "Chamaeleon.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Chamaeleon", 
+    "Family": "Bayer"
 }

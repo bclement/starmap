@@ -1,6 +1,14 @@
 {
-    "Name": "Scutum",
-    "Family": "Hercules",
-    "WktFiles": ["Scutum.wkt"],
-    "labelPoints": [[18.91,-4.79]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                18.91, 
+                -4.79
+            ], 
+            "WktFile": "Scutum.wkt", 
+            "MaxScale": 0.006
+        }
+    ], 
+    "Name": "Scutum", 
+    "Family": "Hercules"
 }

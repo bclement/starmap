@@ -1,6 +1,14 @@
 {
-    "Name": "Ophiuchus",
-    "Family": "Hercules",
-    "WktFiles": ["Ophiuchus.wkt"],
-    "labelPoints": [[18.67,10.94]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                18.67, 
+                10.94
+            ], 
+            "WktFile": "Ophiuchus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Ophiuchus", 
+    "Family": "Hercules"
 }

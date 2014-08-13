@@ -1,6 +1,21 @@
 {
-    "Name": "Pegasus",
-    "Family": "Perseus",
-    "WktFiles": ["left-Pegasus.wkt", "right-Pegasus.wkt"],
-    "labelPoints": [[23.88,26.41],[-1.0]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                23.88, 
+                26.41
+            ], 
+            "WktFile": "left-Pegasus.wkt", 
+            "MaxScale": 0.012
+        }, 
+        {
+            "LabelPoint": [
+                -1,0
+            ], 
+            "WktFile": "right-Pegasus.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Pegasus", 
+    "Family": "Perseus"
 }

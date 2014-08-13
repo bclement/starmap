@@ -1,6 +1,14 @@
 {
-    "Name": "Pavo",
-    "Family": "Bayer",
-    "WktFiles": ["Pavo.wkt"],
-    "LabelPoints": [[21.38,-60.86]]
+    "PolyInfos": [
+        {
+            "LabelPoint": [
+                21.38, 
+                -60.86
+            ], 
+            "WktFile": "Pavo.wkt", 
+            "MaxScale": 0.012
+        }
+    ], 
+    "Name": "Pavo", 
+    "Family": "Bayer"
 }
