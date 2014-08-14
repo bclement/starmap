@@ -15,6 +15,15 @@ import (
 	"strings"
 )
 
+var smlCircle *style.PointStyle = style.NewPointStyle(0.5, color.White,
+	style.CIRCLE)
+var midCircle *style.PointStyle = style.NewPointStyle(1, color.White,
+	style.CIRCLE)
+var lrgCircle *style.PointStyle = style.NewPointStyle(2, color.White,
+	style.CIRCLE)
+var superCircle *style.PointStyle = style.NewPointStyle(3, color.White,
+	style.CIRCLE)
+
 /* create the cache key for a WMS tile */
 func createKey(layer string, width, height int, lower,
 	upper *geom.Point) string {
@@ -99,10 +108,6 @@ func createStarTile(w http.ResponseWriter, width, height int,
 	if dataErr != nil {
 		return nil, dataErr
 	}
-	smlCircle := style.NewPointStyle(0.5, color.White, style.CIRCLE)
-	midCircle := style.NewPointStyle(1, color.White, style.CIRCLE)
-	lrgCircle := style.NewPointStyle(2, color.White, style.CIRCLE)
-	superCircle := style.NewPointStyle(3, color.White, style.CIRCLE)
 	lowerHash, upperHash := geom.BBoxHash(lower, upper, geom.STELLAR)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
 	img := render.Create(width, height, color.Black)
