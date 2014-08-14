@@ -1,11 +1,11 @@
 package starmap
 
 import (
-    "image"
-    "os"
-    "bufio"
+	"bufio"
 	"geom"
+	"image"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"text/template"
@@ -26,36 +26,40 @@ var templateErr error
 func init() {
 	/* handler() defined below */
 	http.HandleFunc("/", handler)
+	/* load static data into memory */
 	data, dataErr = LoadData("data/bright.tsv")
-    constelData, constelErr = LoadConstellations("data/consts")
-    chars, charsErr = loadChars()
+	constelData, constelErr = LoadConstellations("data/consts")
+	chars, charsErr = loadChars()
 	featureTemplate, templateErr =
 		template.ParseFiles("templates/getfeatureinfo.template")
 }
 
+/* load character map image */
 func loadChars() (image.Image, error) {
-    f, err := os.Open("data/chars.png")
-    if err != nil {
-        return nil, err
-    }
-    defer f.Close()
-    rval, _, err := image.Decode(bufio.NewReader(f))
-    if err != nil {
-        return nil, err
-    }
-    return rval, nil
+	f, err := os.Open("data/chars.png")
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	rval, _, err := image.Decode(bufio.NewReader(f))
+	if err != nil {
+		return nil, err
+	}
+	return rval, nil
 }
 
+/* send HTTP error response */
 func doErr(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), http.StatusInternalServerError)
 }
 
+/* get string url parameter with default */
 func strParam(key, defaultValue string, r *http.Request) string {
-    rval := r.FormValue(key)
-    if rval == "" {
-        rval = defaultValue
-    }
-    return rval
+	rval := r.FormValue(key)
+	if rval == "" {
+		rval = defaultValue
+	}
+	return rval
 }
 
 /* parse integer url parameter
@@ -117,6 +121,7 @@ func parseBbox(key string, r *http.Request) (*geom.Point, *geom.Point) {
 	return geom.NewPoint2D(leftx, lowery), geom.NewPoint2D(rightx, uppery)
 }
 
+/* top level WMS request handler */
 func handler(w http.ResponseWriter, r *http.Request) {
 	request := r.FormValue("REQUEST")
 	if strings.EqualFold(request, "GETFEATUREINFO") {

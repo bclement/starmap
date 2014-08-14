@@ -83,8 +83,8 @@ func (p *Point) String() string {
 /* multi-point polygon */
 type Polygon struct {
 	/* storage for exterior ring */
-	c CoordinateSeq
-    bbox *BoundingBox
+	c    CoordinateSeq
+	bbox *BoundingBox
 }
 
 /* create a new polygon with given dimensions from coordinate sequence
@@ -93,34 +93,34 @@ func NewPoly(dims int, coords ...float64) (*Polygon, error) {
 	if dims < 2 || len(coords)%dims != 0 {
 		return nil, fmt.Errorf("Invalid dimensions: %s", len(coords))
 	}
-    var bbox *BoundingBox = nil
-    if dims == 2 {
-        bbox = computeBbox2D(coords)
-    }
+	var bbox *BoundingBox = nil
+	if dims == 2 {
+		bbox = computeBbox2D(coords)
+	}
 	return &Polygon{CoordinateSeq{coords, dims}, bbox}, nil
 }
 
 /* take in a 2D coordinate sequence
 return bounding box containing mins and maxes */
 func computeBbox2D(coords []float64) *BoundingBox {
-    minX, minY := math.Inf(1), math.Inf(1)
-    maxX, maxY := math.Inf(-1), math.Inf(-1)
-    for i := 1; i < len(coords); i += 2 {
-        x, y := coords[i-1], coords[i]
-        if x < minX {
-            minX = x
-        }
-        if x > maxX {
-            maxX = x
-        }
-        if y < minY {
-            minY = y
-        }
-        if y > maxY {
-            maxY = y
-        }
-    }
-    return NewBBox2D(minX, minY, maxX, maxY)
+	minX, minY := math.Inf(1), math.Inf(1)
+	maxX, maxY := math.Inf(-1), math.Inf(-1)
+	for i := 1; i < len(coords); i += 2 {
+		x, y := coords[i-1], coords[i]
+		if x < minX {
+			minX = x
+		}
+		if x > maxX {
+			maxX = x
+		}
+		if y < minY {
+			minY = y
+		}
+		if y > maxY {
+			maxY = y
+		}
+	}
+	return NewBBox2D(minX, minY, maxX, maxY)
 }
 
 /*
@@ -129,7 +129,7 @@ returns newly created 2D polygon
 error if length of coords isn't divisible by 2
 */
 func NewPoly2D(coords ...float64) (*Polygon, error) {
-    return NewPoly(2, coords...)
+	return NewPoly(2, coords...)
 }
 
 /*
@@ -138,7 +138,7 @@ returns newly created 3D polygon
 error if length coords insn't divisible by 3
 */
 func NewPoly3D(coords ...float64) (*Polygon, error) {
-    return NewPoly(3, coords...)
+	return NewPoly(3, coords...)
 }
 
 /* see Geometry interface */
@@ -153,7 +153,7 @@ func (p *Polygon) Coords() *CoordinateSeq {
 
 /* return true if a is between the b's */
 func between(a, b0, b1 float64) bool {
-    return (b0 > a) != (b1 > a)
+	return (b0 > a) != (b1 > a)
 }
 
 /* takes in a point (x,y) and a line defined by (x0,y0)(x1,y1)
@@ -161,7 +161,7 @@ returns 0 if point is on the line, negative if point is right of
 the line and positive if point is left of the line (assuming x axis
 increases right) */
 func comp(x, y, x0, y0, x1, y1 float64) float64 {
-    return (x1 - x0) * (y - y0) - (x-x0) * (y1 - y0)
+	return (x1-x0)*(y-y0) - (x-x0)*(y1-y0)
 }
 
 /* winding number method
@@ -169,56 +169,56 @@ returns false positives for unknown reason
 should return true if point in inside polygon
 */
 func (p *Polygon) WindingContains(point *Point) bool {
-    if p.bbox != nil && !p.bbox.Contains(point) {
-        return false
-    }
-    x := point.X()
-    y := point.Y()
-    winding := 0
-    length := p.c.Len()
-    for i := 1; i < length; i += 1 {
-        v0 := p.c.Get(i-1)
-        x0, y0 := v0[0], v0[1]
-        v1 := p.c.Get(i)
-        x1, y1 := v1[0], v1[1]
-        if y0 <= y {
-            if y1 > y && comp(x,y,x0,y0,x1,y1) > 0 {
-                winding += 1
-            }
-        } else if y1 <= y && comp(x,y,x0,y0,x1,y1) < 0 {
-            winding -= 1
-        }
-    }
-    return winding != 0
+	if p.bbox != nil && !p.bbox.Contains(point) {
+		return false
+	}
+	x := point.X()
+	y := point.Y()
+	winding := 0
+	length := p.c.Len()
+	for i := 1; i < length; i += 1 {
+		v0 := p.c.Get(i - 1)
+		x0, y0 := v0[0], v0[1]
+		v1 := p.c.Get(i)
+		x1, y1 := v1[0], v1[1]
+		if y0 <= y {
+			if y1 > y && comp(x, y, x0, y0, x1, y1) > 0 {
+				winding += 1
+			}
+		} else if y1 <= y && comp(x, y, x0, y0, x1, y1) < 0 {
+			winding -= 1
+		}
+	}
+	return winding != 0
 }
 
 /* return true if point x,y is left of the line between v0 and v1 */
 func leftOf(x, y, x0, y0, x1, y1 float64) bool {
-    lineX := (x1-x0) * (y-y0)/(y1-y0) + x0
-    return x < lineX
+	lineX := (x1-x0)*(y-y0)/(y1-y0) + x0
+	return x < lineX
 }
 
 /* ray casting method
 returns true if point in inside polygon
 */
 func (p *Polygon) Contains(point *Point) bool {
-    if p.bbox != nil && !p.bbox.Contains(point) {
-        return false
-    }
-    x := point.X()
-    y := point.Y()
-    rval := false
-    length := p.c.Len()
-    for i := 1; i < length; i += 1 {
-        v0 := p.c.Get(i-1)
-        x0, y0 := v0[0], v0[1]
-        v1 := p.c.Get(i)
-        x1, y1 := v1[0], v1[1]
-        if between(y, y0, y1) && leftOf(x, y, x0, y0, x1, y1) {
-            rval = !rval
-        }
-    }
-    return rval
+	if p.bbox != nil && !p.bbox.Contains(point) {
+		return false
+	}
+	x := point.X()
+	y := point.Y()
+	rval := false
+	length := p.c.Len()
+	for i := 1; i < length; i += 1 {
+		v0 := p.c.Get(i - 1)
+		x0, y0 := v0[0], v0[1]
+		v1 := p.c.Get(i)
+		x1, y1 := v1[0], v1[1]
+		if between(y, y0, y1) && leftOf(x, y, x0, y0, x1, y1) {
+			rval = !rval
+		}
+	}
+	return rval
 }
 
 /* bounds defined by two points */
@@ -280,8 +280,9 @@ func (bb *BoundingBox) Covers(g Geometry) bool {
 	return checkAll(bb, g, gte)
 }
 
+/* return true if thsi bounding box includes any points in g */
 func (bb *BoundingBox) Touches(g Geometry) bool {
-    return checkAny(bb, g, gte)
+	return checkAny(bb, g, gte)
 }
 
 /*
@@ -291,7 +292,7 @@ all geometry coordinates return true for comp(coord, min) and
 true for comp(max, coord) for bounds min and max
 */
 func checkAll(bb *BoundingBox, g Geometry,
-        comp func(float64, float64) bool) bool {
+	comp func(float64, float64) bool) bool {
 	bbdims := len(bb.min)
 	gdims := g.Dims()
 	gc := g.Coords()
@@ -319,7 +320,7 @@ any geometry coordinates return true for comp(coord, min) and
 true for comp(max, coord) for bounds min and max
 */
 func checkAny(bb *BoundingBox, g Geometry,
-        comp func(float64, float64) bool) bool {
+	comp func(float64, float64) bool) bool {
 	bbdims := len(bb.min)
 	gdims := g.Dims()
 	gc := g.Coords()
@@ -327,20 +328,20 @@ func checkAny(bb *BoundingBox, g Geometry,
 	if gdims <= bbdims {
 		for i := 0; i < size; i += 1 {
 			coord := gc.Get(i)
-            passes := true
+			passes := true
 			for d := 0; d < bbdims && d < gdims; d += 1 {
 				if !comp(coord[d], bb.min[d]) {
 					passes = false
-                    break
+					break
 				}
 				if !comp(bb.max[d], coord[d]) {
 					passes = false
-                    break;
+					break
 				}
 			}
-            if passes {
-                return true
-            }
+			if passes {
+				return true
+			}
 		}
 	}
 	return false

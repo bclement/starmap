@@ -1,8 +1,6 @@
 package starmap
 
 import (
-    "strings"
-    "math"
 	"appengine"
 	"appengine/memcache"
 	"bytes"
@@ -10,21 +8,25 @@ import (
 	"geom"
 	"image/color"
 	"image/png"
+	"math"
 	"net/http"
 	"render"
 	"render/style"
+	"strings"
 )
 
+/* create the cache key for a WMS tile */
 func createKey(layer string, width, height int, lower,
-        upper *geom.Point) string {
+	upper *geom.Point) string {
 	return fmt.Sprintf("%v-%v-%v-%v-%v", layer, width, height, lower, upper)
 }
 
+/* WMS getmap handler function */
 func getmap(w http.ResponseWriter, r *http.Request) {
 	width := intParam("WIDTH", 1024, r)
 	height := intParam("HEIGHT", 512, r)
 	lower, upper := parseBbox("BBOX", r)
-    layer := strParam("LAYERS", "stars", r)
+	layer := strParam("LAYERS", "stars", r)
 	ctx := appengine.NewContext(r)
 	cacheKey := createKey(layer, width, height, lower, upper)
 	item, err := memcache.Get(ctx, cacheKey)
@@ -48,40 +50,42 @@ func getmap(w http.ResponseWriter, r *http.Request) {
 	w.Write(item.Value)
 }
 
+/* create a new tile image for request */
 func createTile(w http.ResponseWriter, layer string, width, height int,
-	    lower, upper *geom.Point) ([]byte, error) {
-    layer = strings.ToLower(layer)
-    if layer == "constellations" {
-        return createConstTile(w, width, height, lower, upper)
-    } else {
-        return createStarTile(w, width, height, lower, upper)
-    }
+	lower, upper *geom.Point) ([]byte, error) {
+	layer = strings.ToLower(layer)
+	if layer == "constellations" {
+		return createConstTile(w, width, height, lower, upper)
+	} else {
+		return createStarTile(w, width, height, lower, upper)
+	}
 }
 
+/* create a constellation layer tile */
 func createConstTile(w http.ResponseWriter, width, height int,
-	    lower, upper *geom.Point) ([]byte, error) {
-    if constelErr != nil {
-        return nil, constelErr
-    }
-    scale := math.Abs(upper.X() - lower.X()) / float64(width)
-    txtColor := color.White
-    s := style.NewPolyStyle(1, color.White)
+	lower, upper *geom.Point) ([]byte, error) {
+	if constelErr != nil {
+		return nil, constelErr
+	}
+	scale := math.Abs(upper.X()-lower.X()) / float64(width)
+	txtColor := color.White
+	s := style.NewPolyStyle(1, color.White)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
 	img := render.CreateTransparent(width, height)
-    bbox := geom.NewBBox2D(lower.X(), lower.Y(), upper.X(), upper.Y())
-    for _, c := range(constelData) {
-        for _, pi := range(c.PolyInfos) {
-            if bbox.Touches(pi.Geom) {
-                render.RenderPoly(img, pi.Geom, trans, s)
-                if charsErr == nil && pi.LabelPoint != nil &&
-                        pi.MaxScale > scale {
-                    labelPoint := pi.LabelPoint
-                    pix := trans.TransformXY(labelPoint[0], labelPoint[1])
-                    render.RenderString(img, chars, 10, pix, c.Name, txtColor)
-                }
-            }
-        }
-    }
+	bbox := geom.NewBBox2D(lower.X(), lower.Y(), upper.X(), upper.Y())
+	for _, c := range constelData {
+		for _, pi := range c.PolyInfos {
+			if bbox.Touches(pi.Geom) {
+				render.RenderPoly(img, pi.Geom, trans, s)
+				if charsErr == nil && pi.LabelPoint != nil &&
+					pi.MaxScale > scale {
+					labelPoint := pi.LabelPoint
+					pix := trans.TransformXY(labelPoint[0], labelPoint[1])
+					render.RenderString(img, chars, 10, pix, c.Name, txtColor)
+				}
+			}
+		}
+	}
 	var rval bytes.Buffer
 	if err := png.Encode(&rval, img); err != nil {
 		return nil, err
@@ -89,8 +93,9 @@ func createConstTile(w http.ResponseWriter, width, height int,
 	return rval.Bytes(), nil
 }
 
+/* create a star layer tile */
 func createStarTile(w http.ResponseWriter, width, height int,
-	    lower, upper *geom.Point) ([]byte, error) {
+	lower, upper *geom.Point) ([]byte, error) {
 	if dataErr != nil {
 		return nil, dataErr
 	}
@@ -136,4 +141,3 @@ func createStarTile(w http.ResponseWriter, width, height int,
 	}
 	return rval.Bytes(), nil
 }
-

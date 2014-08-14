@@ -104,6 +104,7 @@ func (sd Stardata) Range(start, end string) Stardata {
 	return sd[startIndex:endIndex]
 }
 
+/* load static star data from tsv file */
 func LoadData(datafile string) (Stardata, error) {
 	f, err := os.Open(datafile)
 	if err != nil {

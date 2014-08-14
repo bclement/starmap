@@ -33,13 +33,15 @@ func CreateTransform(lowerLeft, upperRight *Point, width, height int,
 
 /* take in a point in spatial dimensions, return image pixel location */
 func (pt *PointTransform) Transform(p *Point) *image.Point {
-    return pt.TransformXY(p.X(), p.Y())
+	return pt.TransformXY(p.X(), p.Y())
 }
 
+/* take in a 2D point in spatial dimensions, return image pixel location */
 func (pt *PointTransform) TransformCoord(c []float64) *image.Point {
-    return pt.TransformXY(c[0], c[1])
+	return pt.TransformXY(c[0], c[1])
 }
 
+/* take in a 2D point in spatial dimensions, return image pixel location */
 func (pt *PointTransform) TransformXY(x, y float64) *image.Point {
 	rawX := (pt.Max.X() - x) / pt.Dx
 	if pt.gd.xIncreasesRight {
@@ -56,20 +58,20 @@ func (pt *PointTransform) TransformXY(x, y float64) *image.Point {
 
 /* take in an image pixel and return a point in spatial dimensions */
 func (pt *PointTransform) Reverse(p *image.Point) *Point {
-    tmpX := float64(p.X)
-    if pt.gd.xIncreasesRight {
-        tmpX += float64(pt.Width)
-    }
-    tmpX *= pt.Dx
-    tmpX -= pt.Max.X()
-    tmpX = -tmpX
+	tmpX := float64(p.X)
+	if pt.gd.xIncreasesRight {
+		tmpX += float64(pt.Width)
+	}
+	tmpX *= pt.Dx
+	tmpX -= pt.Max.X()
+	tmpX = -tmpX
 
-    tmpY := float64(p.Y)
-    if !pt.gd.yIncreasesUp {
-        tmpY += float64(pt.Height)
-    }
-    tmpY *= pt.Dy
-    tmpY -= pt.Max.Y()
-    tmpY = -tmpY
-    return NewPoint2D(tmpX, tmpY)
+	tmpY := float64(p.Y)
+	if !pt.gd.yIncreasesUp {
+		tmpY += float64(pt.Height)
+	}
+	tmpY *= pt.Dy
+	tmpY -= pt.Max.Y()
+	tmpY = -tmpY
+	return NewPoint2D(tmpX, tmpY)
 }

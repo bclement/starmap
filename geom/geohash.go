@@ -19,7 +19,10 @@ type GridDef struct {
 	yIncreasesUp    bool
 }
 
+/* CRS 84 */
 var LONLAT *GridDef = &GridDef{0, 0, 180, 90, true, true}
+
+/* equatorial coordinate system */
 var STELLAR *GridDef = &GridDef{12, 0, 12, 90, false, true}
 
 /* interface for getting geohash strings */

@@ -151,7 +151,7 @@ func TestTransStellar(t *testing.T) {
 	max := NewPoint2D(6, 30)
 	trans := CreateTransform(min, max, 90, 30, STELLAR)
 	p0 := NewPoint2D(18, -30)
-    assertRoundTrip(trans, p0, &image.Point{0, 30}, t)
+	assertRoundTrip(trans, p0, &image.Point{0, 30}, t)
 	p1 := NewPoint2D(15, -15)
 	assertRoundTrip(trans, p1, &image.Point{22, 22}, t)
 	p2 := NewPoint2D(12, 0)
@@ -163,10 +163,10 @@ func TestTransStellar(t *testing.T) {
 }
 
 func assertRoundTrip(trans *PointTransform, src *Point, exp *image.Point,
-        t *testing.T) {
-    pix := trans.Transform(src)
+	t *testing.T) {
+	pix := trans.Transform(src)
 	assertTrans(pix, exp, t)
-    assertRevTrans(trans.Reverse(pix), src, t)
+	assertRevTrans(trans.Reverse(pix), src, t)
 }
 
 func assertTrans(res, exp *image.Point, t *testing.T) {
@@ -176,35 +176,35 @@ func assertTrans(res, exp *image.Point, t *testing.T) {
 }
 
 func assertRevTrans(res, exp *Point, t *testing.T) {
-    if math.Abs(res.X() - exp.X()) > 0.1 ||
-            math.Abs(res.Y() - exp.Y()) > 1.0 {
-        t.Errorf("Expected %v, got %v", exp, res)
-    }
+	if math.Abs(res.X()-exp.X()) > 0.1 ||
+		math.Abs(res.Y()-exp.Y()) > 1.0 {
+		t.Errorf("Expected %v, got %v", exp, res)
+	}
 }
 
 func TestInPoly(t *testing.T) {
 	poly, _ := NewPoly2D(19.2, 30, 19.2, -66, 4.8, -66, 4.8, -42, 14.4, -42,
-        14.4, 6, 9.6, 6, 9.6, -18, 4.8, -18, 4.8, 6.01, 4.8, 30, 19.2, 30)
-    outsidePoints := []*Point{NewPoint2D(24, -42), NewPoint2D(9.6, 31),
-        NewPoint2D(14.4, -90), NewPoint2D(10, 0), NewPoint2D(10, -18),
-        NewPoint2D(10, -20), NewPoint2D(5, -20), NewPoint2D(2, 0)}
-    for _, point := range(outsidePoints) {
-        if poly.Contains(point) {
-            t.Errorf("Expected %v outside", point)
-        }
-    }
-    insidePoints := []*Point{NewPoint2D(8, 0), NewPoint2D(8, 6),
-        NewPoint2D(10,10), NewPoint2D(15, 10), NewPoint2D(15,0),
-        NewPoint2D(15, -10), NewPoint2D(15, -50), NewPoint2D(10, -50)}
-    for _, point := range(insidePoints) {
-        if !poly.Contains(point) {
-            t.Errorf("Expected %v inside", point)
-        }
-    }
-    for i := -90.0; i < 30.0; i+=0.3 {
-        p := NewPoint2D(0, i)
-        if poly.Contains(p) {
-            t.Errorf("Didn't expect to contain %v", p)
-        }
-    }
+		14.4, 6, 9.6, 6, 9.6, -18, 4.8, -18, 4.8, 6.01, 4.8, 30, 19.2, 30)
+	outsidePoints := []*Point{NewPoint2D(24, -42), NewPoint2D(9.6, 31),
+		NewPoint2D(14.4, -90), NewPoint2D(10, 0), NewPoint2D(10, -18),
+		NewPoint2D(10, -20), NewPoint2D(5, -20), NewPoint2D(2, 0)}
+	for _, point := range outsidePoints {
+		if poly.Contains(point) {
+			t.Errorf("Expected %v outside", point)
+		}
+	}
+	insidePoints := []*Point{NewPoint2D(8, 0), NewPoint2D(8, 6),
+		NewPoint2D(10, 10), NewPoint2D(15, 10), NewPoint2D(15, 0),
+		NewPoint2D(15, -10), NewPoint2D(15, -50), NewPoint2D(10, -50)}
+	for _, point := range insidePoints {
+		if !poly.Contains(point) {
+			t.Errorf("Expected %v inside", point)
+		}
+	}
+	for i := -90.0; i < 30.0; i += 0.3 {
+		p := NewPoint2D(0, i)
+		if poly.Contains(p) {
+			t.Errorf("Didn't expect to contain %v", p)
+		}
+	}
 }

@@ -1,11 +1,11 @@
 package render
 
 import (
-    "bufio"
-    "geom"
+	"bufio"
+	"geom"
 	"image"
 	"image/color"
-    "image/draw"
+	"image/draw"
 	"image/png"
 	"os"
 	"render/style"
@@ -31,7 +31,7 @@ func TestCreate(t *testing.T) {
 	Render(img, p3, smallSquare)
 	Render(img, p4, largeCircle)
 	Render(img, p5, largeSquare)
-    writeImg(t, img, "/tmp/res.png")
+	writeImg(t, img, "/tmp/res.png")
 }
 
 func writeImg(t *testing.T, img draw.Image, fname string) {
@@ -57,48 +57,49 @@ func TestCircle(t *testing.T) {
 			Render(img, p, circle)
 		}
 	}
-    writeImg(t, img, "/tmp/dots.png")
+	writeImg(t, img, "/tmp/dots.png")
 }
 
 func TestLines(t *testing.T) {
-    img := Create(256,256, color.Black)
-    s := style.NewPolyStyle(1, color.White)
-    p0 := &image.Point{0,0}
-    for x := 0; x < 256; x += 16 {
-        p1 := &image.Point{x, 255}
-        RenderLine(img, p0, p1, s)
-    }
-    writeImg(t, img, "/tmp/lines.png")
+	img := Create(256, 256, color.Black)
+	s := style.NewPolyStyle(1, color.White)
+	p0 := &image.Point{0, 0}
+	for x := 0; x < 256; x += 16 {
+		p1 := &image.Point{x, 255}
+		RenderLine(img, p0, p1, s)
+	}
+	writeImg(t, img, "/tmp/lines.png")
 }
 
 func TestPolys(t *testing.T) {
-    img := Create(256, 256, color.Black)
-    s := style.NewPolyStyle(1, color.White)
-    p1, err1 := geom.NewPoly2D(16.5,67.5,16.5,22.5,13.5,22.5,13.5,67.5)
-    p2, err2 := geom.NewPoly2D(14,22.5,13.5,11,13,22.5,13.5,33)
-    if err1 != nil || err2 != nil {
-        t.Errorf("can't create poly %v %v", err1, err1)
-    }
+	img := Create(256, 256, color.Black)
+	s := style.NewPolyStyle(1, color.White)
+	p1, err1 := geom.NewPoly2D(16.5, 67.5, 16.5, 22.5, 13.5, 22.5, 13.5, 67.5)
+	p2, err2 := geom.NewPoly2D(14, 22.5, 13.5, 11, 13, 22.5, 13.5, 33)
+	if err1 != nil || err2 != nil {
+		t.Errorf("can't create poly %v %v", err1, err1)
+	}
 	min := geom.NewPoint2D(15, 0)
 	max := geom.NewPoint2D(12, 45)
 	trans := geom.CreateTransform(min, max, 255, 255, geom.STELLAR)
-    RenderPoly(img, p1, trans, s)
-    RenderPoly(img, p2, trans, s)
-    writeImg(t, img, "/tmp/poly.png")
+	RenderPoly(img, p1, trans, s)
+	RenderPoly(img, p2, trans, s)
+	writeImg(t, img, "/tmp/poly.png")
 }
 
 func TestString(t *testing.T) {
-    img := Create(256, 256, color.Black)
-    f, err := os.Open("../data/chars.png")
-    if err != nil {
-        t.Errorf("can't open chars: %v", err)
-    }
-    defer f.Close()
-    chars, _, err := image.Decode(bufio.NewReader(f))
-    if err != nil {
-        t.Errorf("can't decode chars: %v", err)
-    }
-    p := image.Pt(20, 20)
-    RenderString(img, chars, 10, &p, "Hello World", color.White)
-    writeImg(t, img, "/tmp/strings.png")
+	img := Create(256, 256, color.Black)
+	f, err := os.Open("../data/chars.png")
+	if err != nil {
+		t.Errorf("can't open chars: %v", err)
+	}
+	defer f.Close()
+	chars, _, err := image.Decode(bufio.NewReader(f))
+	if err != nil {
+		t.Errorf("can't decode chars: %v", err)
+	}
+	p := image.Pt(20, 20)
+	c := color.RGBA{255, 0, 0, 255}
+	RenderString(img, chars, 10, &p, "Hello World", c)
+	writeImg(t, img, "/tmp/strings.png")
 }

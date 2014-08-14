@@ -1,14 +1,14 @@
 package starmap
 
 import (
-    "render"
 	"geom"
-	"testing"
 	"image/color"
-    "image/draw"
+	"image/draw"
 	"image/png"
 	"os"
+	"render"
 	"render/style"
+	"testing"
 )
 
 func TestPrefix(t *testing.T) {
@@ -82,40 +82,40 @@ func assertFilter(t *testing.T, lower, upper *geom.Point, num int,
 }
 
 func TestReadPoly(t *testing.T) {
-    p, err := readWktFile("../data/consts/Equuleus.wkt")
-    if err != nil {
-        t.Errorf("cant read: %v", err)
-    }
-    coords := p.Coords()
-    if coords.Len() != 39 {
-        t.Errorf("expected %v coords, got %v", 39, coords.Len())
-    }
+	p, err := readWktFile("../data/consts/Equuleus.wkt")
+	if err != nil {
+		t.Errorf("cant read: %v", err)
+	}
+	coords := p.Coords()
+	if coords.Len() != 39 {
+		t.Errorf("expected %v coords, got %v", 39, coords.Len())
+	}
 }
 
 func TestConstFilter(t *testing.T) {
-    data, err := LoadConstellations("../data/consts")
-    if err != nil || len(data) < 1 {
-        t.Errorf("loading: %v", err)
-    }
-    s := style.NewPolyStyle(1, color.White)
-    width := 512
-    height := 256
+	data, err := LoadConstellations("../data/consts")
+	if err != nil || len(data) < 1 {
+		t.Errorf("loading: %v", err)
+	}
+	s := style.NewPolyStyle(1, color.White)
+	width := 512
+	height := 256
 	lower := geom.NewPoint2D(24, -90)
-    upper := geom.NewPoint2D(0, 90)
+	upper := geom.NewPoint2D(0, 90)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
-    for _, c := range(data) {
-        if len(c.PolyInfos) < 1 {
-            t.Errorf("Expected poly infos for %v", c.Name)
-        }
-	    img := render.Create(width, height, color.Black)
-        for _, pi := range(c.PolyInfos){
-            if len(pi.LabelPoint) != 2 {
-                t.Errorf("Expected label points for %v", c.Name)
-            }
-            render.RenderPoly(img, pi.Geom, trans, s)
-        }
-        writeImg(t, img, "/tmp/nexconst/" + c.Name + ".png")
-    }
+	for _, c := range data {
+		if len(c.PolyInfos) < 1 {
+			t.Errorf("Expected poly infos for %v", c.Name)
+		}
+		img := render.Create(width, height, color.Black)
+		for _, pi := range c.PolyInfos {
+			if len(pi.LabelPoint) != 2 {
+				t.Errorf("Expected label points for %v", c.Name)
+			}
+			render.RenderPoly(img, pi.Geom, trans, s)
+		}
+		writeImg(t, img, "/tmp/nexconst/"+c.Name+".png")
+	}
 }
 
 func writeImg(t *testing.T, img draw.Image, fname string) {

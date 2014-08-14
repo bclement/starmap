@@ -38,6 +38,8 @@ type PolygonStyle struct {
     Style
 }
 
+/* create a new polygon style with lines that are size wide with the 
+given color. */
 func NewPolyStyle(size float64, color color.Color) *PolygonStyle {
     return &PolygonStyle{Style{size, color}}
 }
