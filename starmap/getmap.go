@@ -15,14 +15,20 @@ import (
 	"strings"
 )
 
-var smlCircle *style.PointStyle = style.NewPointStyle(0.5, color.White,
-	style.CIRCLE)
-var midCircle *style.PointStyle = style.NewPointStyle(1, color.White,
-	style.CIRCLE)
-var lrgCircle *style.PointStyle = style.NewPointStyle(2, color.White,
-	style.CIRCLE)
-var superCircle *style.PointStyle = style.NewPointStyle(3, color.White,
-	style.CIRCLE)
+var smlCircle = style.NewPointStyle(0.5, color.White, style.CIRCLE)
+var midCircle = style.NewPointStyle(1, color.White, style.CIRCLE)
+var lrgCircle = style.NewPointStyle(2, color.White, style.CIRCLE)
+var superCircle = style.NewPointStyle(3, color.White, style.CIRCLE)
+
+var labelColors = map[string]color.Color{
+	"Heavenly Waters": color.RGBA{0, 154, 205, 255},
+	"Hercules":        color.RGBA{34, 139, 34, 255},
+	"Ursa Major":      color.RGBA{100, 149, 237, 255},
+	"Perseus":         color.RGBA{225, 58, 58, 255},
+	"Orion":           color.RGBA{205, 102, 0, 255},
+	"Bayer":           color.RGBA{205, 149, 12, 255},
+	"La Caille":       color.RGBA{137, 104, 205, 255},
+}
 
 /* create the cache key for a WMS tile */
 func createKey(layer string, width, height int, lower,
@@ -77,12 +83,15 @@ func createConstTile(w http.ResponseWriter, width, height int,
 		return nil, constelErr
 	}
 	scale := math.Abs(upper.X()-lower.X()) / float64(width)
-	txtColor := color.White
 	s := style.NewPolyStyle(1, color.White)
 	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
 	img := render.CreateTransparent(width, height)
 	bbox := geom.NewBBox2D(lower.X(), lower.Y(), upper.X(), upper.Y())
 	for _, c := range constelData {
+		txtColor := labelColors[c.Family]
+		if txtColor == nil {
+			txtColor = color.White
+		}
 		for _, pi := range c.PolyInfos {
 			if bbox.Touches(pi.Geom) {
 				render.RenderPoly(img, pi.Geom, trans, s)
