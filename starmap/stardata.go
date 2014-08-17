@@ -1,6 +1,7 @@
 package starmap
 
 import (
+	"appengine"
 	"bufio"
 	"geom"
 	"math"
@@ -9,6 +10,20 @@ import (
 	"strconv"
 	"strings"
 )
+
+/* cache entry for zoom level */
+type Level struct {
+	Datafile string
+	Data     Stardata
+}
+
+/* zoom level data cache */
+var cache = []Level{
+	Level{"data/bright.tsv", nil},
+	Level{"data/tier2.tsv", nil},
+	Level{"data/tier3.tsv", nil},
+	Level{"data/tier4.tsv", nil},
+}
 
 type Star struct {
 	/* may be blank */
@@ -47,7 +62,7 @@ func (sd Stardata) FindIndex(geohash string) int {
 }
 
 /* takes in a point, returns closest star or nil if not found */
-func (sd Stardata) FindClosest(p *geom.Point) *Star {
+func FindClosest(sr *StarReq, p *geom.Point) *Star {
 	lower := geom.NewPoint2D(p.X()+0.5, p.Y()-1)
 	upper := geom.NewPoint2D(p.X()-0.5, p.Y()+1)
 	lowerHash, upperHash := geom.BBoxHash(lower, upper, geom.STELLAR)
@@ -55,20 +70,22 @@ func (sd Stardata) FindClosest(p *geom.Point) *Star {
 	var rval *Star = nil
 	var minDist float64 = math.MaxFloat64
 
-	stars := sd.Range(lowerHash, upperHash)
-	for _, s := range stars {
-		coord, err := geom.UnHash(s.GeoHash, geom.STELLAR)
-		if err != nil {
-			continue
-		}
-		x := math.Abs(p.X() - coord.X())
-		xx := x * x
-		y := math.Abs(p.Y() - coord.Y())
-		yy := y * y
-		zz := xx + yy
-		if minDist > zz {
-			minDist = zz
-			rval = s
+	for sd := range sr.out {
+		stars := sd.Range(lowerHash, upperHash)
+		for _, s := range stars {
+			coord, err := geom.UnHash(s.GeoHash, geom.STELLAR)
+			if err != nil {
+				continue
+			}
+			x := math.Abs(p.X() - coord.X())
+			xx := x * x
+			y := math.Abs(p.Y() - coord.Y())
+			yy := y * y
+			zz := xx + yy
+			if minDist > zz {
+				minDist = zz
+				rval = s
+			}
 		}
 	}
 	return rval
@@ -102,6 +119,52 @@ func (sd Stardata) Range(start, end string) Stardata {
 	startIndex := sd.FindIndex(start)
 	endIndex := sd.FindIndex(end)
 	return sd[startIndex:endIndex]
+}
+
+/* wraps a request with a return channel */
+type StarReq struct {
+	req *Req
+	out chan Stardata
+}
+
+/* takes in request and returns the number of levels
+that should be drawn */
+func levels(sr *StarReq) int {
+	scale := sr.req.Scale()
+	if scale <= 0.00146484375 {
+		return 4
+	} else if scale <= 0.0029296875 {
+		return 3
+	} else if scale <= 0.005859375 {
+		return 2
+	} else {
+		return 1
+	}
+}
+
+/* logic responsible for handling star data cache
+runs as goroutine the takes in a request channel */
+func starReqHandler(c chan *StarReq) {
+	for req := range c {
+		levelNum := levels(req)
+		/* walk reverse so dim gets drawn first */
+		for i := levelNum - 1; i >= 0; i -= 1 {
+			level := &cache[i]
+			if level.Data == nil {
+				ctx := appengine.NewContext(req.req.httpr)
+				ctx.Infof("Loading %v", level.Datafile)
+				data, err := LoadData(level.Datafile)
+				level.Data = data
+				if err != nil {
+					ctx.Errorf("Unable to load %v: %v", level.Datafile, err)
+				}
+			}
+			if level.Data != nil {
+				req.out <- level.Data
+			}
+		}
+		close(req.out)
+	}
 }
 
 /* load static star data from tsv file */

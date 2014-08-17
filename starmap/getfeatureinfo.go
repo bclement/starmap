@@ -56,19 +56,16 @@ func getfeatureinfo(w http.ResponseWriter, r *http.Request) {
 		doErr(w, templateErr)
 		return
 	}
-	width := intParam("WIDTH", 1024, r)
-	height := intParam("HEIGHT", 512, r)
-	lower, upper := parseBbox("BBOX", r)
+	req := ParseReq(r)
 	i := intParam("X", 0, r)
 	j := intParam("Y", 0, r)
-	layersParam := strParam("LAYERS", "stars", r)
-	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
+	trans := req.Trans(geom.STELLAR)
 	coord := trans.Reverse(&image.Point{i, j})
-	layers := strings.Split(layersParam, ",")
+	layers := strings.Split(req.Layer, ",")
 	features := make([]*Feature, 0, 3)
 	for _, layer := range layers {
 		if layer == "stars" {
-			sf := starFeatures(coord)
+			sf := starFeatures(req, coord)
 			features = append(features, sf...)
 		} else if layer == "constellations" {
 			cf := constelFeatures(coord)
@@ -86,8 +83,10 @@ func getfeatureinfo(w http.ResponseWriter, r *http.Request) {
 }
 
 /* get star layer feature info for point */
-func starFeatures(point *geom.Point) []*Feature {
-	star := data.FindClosest(point)
+func starFeatures(req *Req, point *geom.Point) []*Feature {
+	sr := &StarReq{req, make(chan Stardata)}
+	starReqChan <- sr
+	star := FindClosest(sr, point)
 	if star != nil {
 		return []*Feature{&Feature{"star", asParams(star)}}
 	} else {

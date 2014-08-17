@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"geom"
 	"image"
+	"math"
 	"net/http"
 	"os"
 	"strconv"
@@ -14,24 +15,56 @@ import (
 var chars image.Image
 var charsErr error
 
-var data Stardata
-var dataErr error
-
 var constelData Constellations
 var constelErr error
 
 var featureTemplate *template.Template
 var templateErr error
 
+var starReqChan = make(chan *StarReq)
+
 func init() {
 	/* handler() defined below */
 	http.HandleFunc("/", handler)
-	/* load static data into memory */
-	data, dataErr = LoadData("data/bright.tsv")
 	constelData, constelErr = LoadConstellations("data/consts")
 	chars, charsErr = loadChars()
 	featureTemplate, templateErr =
 		template.ParseFiles("templates/getfeatureinfo.template")
+	go starReqHandler(starReqChan)
+}
+
+/* common request parameters */
+type Req struct {
+	httpr  *http.Request
+	Width  int
+	Height int
+	Lower  *geom.Point
+	Upper  *geom.Point
+	Layer  string
+}
+
+/* returns gets zoom scale for request */
+func (r *Req) Scale() float64 {
+	return math.Abs(r.Upper.X()-r.Lower.X()) / float64(r.Width)
+}
+
+/* gets a point transform for request */
+func (r *Req) Trans(gd *geom.GridDef) *geom.PointTransform {
+	return geom.CreateTransform(r.Lower, r.Upper, r.Width, r.Height, gd)
+}
+
+/* get the bounds of the request */
+func (r *Req) BBox() *geom.BoundingBox {
+	return geom.NewBBox2D(r.Lower.X(), r.Lower.Y(), r.Upper.X(), r.Upper.Y())
+}
+
+/* parse common request parameters */
+func ParseReq(r *http.Request) *Req {
+	width := intParam("WIDTH", 1024, r)
+	height := intParam("HEIGHT", 512, r)
+	lower, upper := parseBbox("BBOX", r)
+	layer := strParam("LAYERS", "stars", r)
+	return &Req{r, width, height, lower, upper, layer}
 }
 
 /* load character map image */

@@ -8,7 +8,6 @@ import (
 	"geom"
 	"image/color"
 	"image/png"
-	"math"
 	"net/http"
 	"render"
 	"render/style"
@@ -31,22 +30,19 @@ var labelColors = map[string]color.Color{
 }
 
 /* create the cache key for a WMS tile */
-func createKey(layer string, width, height int, lower,
-	upper *geom.Point) string {
-	return fmt.Sprintf("%v-%v-%v-%v-%v", layer, width, height, lower, upper)
+func createKey(r *Req) string {
+	return fmt.Sprintf("%v-%v-%v-%v-%v", r.Layer, r.Width, r.Height,
+		r.Lower, r.Upper)
 }
 
 /* WMS getmap handler function */
 func getmap(w http.ResponseWriter, r *http.Request) {
-	width := intParam("WIDTH", 1024, r)
-	height := intParam("HEIGHT", 512, r)
-	lower, upper := parseBbox("BBOX", r)
-	layer := strParam("LAYERS", "stars", r)
+	req := ParseReq(r)
 	ctx := appengine.NewContext(r)
-	cacheKey := createKey(layer, width, height, lower, upper)
+	cacheKey := createKey(req)
 	item, err := memcache.Get(ctx, cacheKey)
 	if err == memcache.ErrCacheMiss {
-		tile, err := createTile(w, layer, width, height, lower, upper)
+		tile, err := createTile(w, req)
 		if err != nil {
 			doErr(w, err)
 			return
@@ -66,27 +62,25 @@ func getmap(w http.ResponseWriter, r *http.Request) {
 }
 
 /* create a new tile image for request */
-func createTile(w http.ResponseWriter, layer string, width, height int,
-	lower, upper *geom.Point) ([]byte, error) {
-	layer = strings.ToLower(layer)
+func createTile(w http.ResponseWriter, req *Req) ([]byte, error) {
+	layer := strings.ToLower(req.Layer)
 	if layer == "constellations" {
-		return createConstTile(w, width, height, lower, upper)
+		return createConstTile(w, req)
 	} else {
-		return createStarTile(w, width, height, lower, upper)
+		return createStarTile(w, req)
 	}
 }
 
 /* create a constellation layer tile */
-func createConstTile(w http.ResponseWriter, width, height int,
-	lower, upper *geom.Point) ([]byte, error) {
+func createConstTile(w http.ResponseWriter, req *Req) ([]byte, error) {
 	if constelErr != nil {
 		return nil, constelErr
 	}
-	scale := math.Abs(upper.X()-lower.X()) / float64(width)
+	scale := req.Scale()
 	s := style.NewPolyStyle(1, color.White)
-	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
-	img := render.CreateTransparent(width, height)
-	bbox := geom.NewBBox2D(lower.X(), lower.Y(), upper.X(), upper.Y())
+	trans := req.Trans(geom.STELLAR)
+	img := render.CreateTransparent(req.Width, req.Height)
+	bbox := req.BBox()
 	for _, c := range constelData {
 		txtColor := labelColors[c.Family]
 		if txtColor == nil {
@@ -112,42 +106,45 @@ func createConstTile(w http.ResponseWriter, width, height int,
 }
 
 /* create a star layer tile */
-func createStarTile(w http.ResponseWriter, width, height int,
-	lower, upper *geom.Point) ([]byte, error) {
-	if dataErr != nil {
-		return nil, dataErr
-	}
-	lowerHash, upperHash := geom.BBoxHash(lower, upper, geom.STELLAR)
-	trans := geom.CreateTransform(lower, upper, width, height, geom.STELLAR)
-	img := render.Create(width, height, color.Black)
-	stars := data.Range(lowerHash, upperHash)
-	for _, s := range stars {
-		coord, err := geom.UnHash(s.GeoHash, geom.STELLAR)
-		if err != nil {
-			return nil, err
+func createStarTile(w http.ResponseWriter, req *Req) ([]byte, error) {
+	lowerHash, upperHash := geom.BBoxHash(req.Lower, req.Upper, geom.STELLAR)
+	trans := req.Trans(geom.STELLAR)
+	img := render.Create(req.Width, req.Height, color.Black)
+
+	sr := &StarReq{req, make(chan Stardata)}
+	starReqChan <- sr
+	for data := range sr.out {
+		stars := data.Range(lowerHash, upperHash)
+		for _, s := range stars {
+			coord, err := geom.UnHash(s.GeoHash, geom.STELLAR)
+			if err != nil {
+				return nil, err
+			}
+			pix := trans.Transform(coord)
+			mag := s.Magnitude
+			style := smlCircle
+			var gray uint8
+			if mag < -1 {
+				style = superCircle
+				gray = 255
+			} else if mag < 0 {
+				style = superCircle
+				gray = 200
+			} else if mag < 2 {
+				style = lrgCircle
+				gray = uint8((2.0-mag)*64.0) + 128
+			} else if mag < 4 {
+				style = midCircle
+				gray = uint8((4.0-mag)*64.0) + 128
+			} else if mag < 20 {
+				gray = uint8((20.0-mag)*12.0) + 64
+			} else {
+				gray = 64
+			}
+			color := color.RGBA{gray, gray, gray, 255}
+			style.Style.Color = color
+			render.Render(img, pix, style)
 		}
-		pix := trans.Transform(coord)
-		mag := s.Magnitude
-		style := smlCircle
-		var gray uint8
-		if mag < -1 {
-			style = superCircle
-			gray = 255
-		} else if mag < 0 {
-			style = superCircle
-			gray = 200
-		} else if mag < 2 {
-			style = lrgCircle
-			gray = uint8((2.0-mag)*64.0) + 128
-		} else if mag < 4 {
-			style = midCircle
-			gray = uint8((4.0-mag)*64.0) + 128
-		} else {
-			gray = uint8((6.0-mag)*64.0) + 128
-		}
-		color := color.RGBA{gray, gray, gray, 255}
-		style.Style.Color = color
-		render.Render(img, pix, style)
 	}
 	var rval bytes.Buffer
 	if err := png.Encode(&rval, img); err != nil {

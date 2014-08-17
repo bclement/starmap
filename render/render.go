@@ -96,6 +96,11 @@ func CreateTransparent(width, height int) draw.Image {
 takes in point to render onto image using style
 */
 func Render(img draw.Image, p *image.Point, pstyle *style.PointStyle) {
+    /* single pixel optimization */
+    if pstyle.Style.Size <= 0.5 {
+	    img.Set(p.X, p.Y, pstyle.Color)
+        return
+    }
 	var mask image.Image
 	/* TODO don't create new mask every time */
 	if pstyle.Shape == style.CIRCLE {
