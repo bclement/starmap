@@ -21,6 +21,8 @@ starlayer = new OpenLayers.Layer.WMS( "stars", "/wms",
         {layers: 'stars'}, {'displayInLayerSwitcher':false} );
 constlayer = new OpenLayers.Layer.WMS( "constellations", "/wms",
         {layers: 'constellations'}, {'isBaseLayer': false} );
+asterlayer = new OpenLayers.Layer.WMS( "asterisms", "/wms",
+        {layers: 'asterisms'}, {'isBaseLayer': false} );
 stellarUrl = function (bounds) {
     bounds = this.adjustBounds(bounds);
     bounds = toStellar(bounds)
@@ -39,10 +41,12 @@ stellarUrl = function (bounds) {
 };
 starlayer.getURL = stellarUrl;
 constlayer.getURL = stellarUrl;
+asterlayer.getURL = stellarUrl;
 constlayer.setVisibility(false);
+asterlayer.setVisibility(false);
 var map = new OpenLayers.Map({
     div: "map",
-    layers: [starlayer, constlayer],
+    layers: [starlayer, constlayer, asterlayer],
     center: [0, 0],
     zoom: 3
 });

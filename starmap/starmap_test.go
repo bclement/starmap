@@ -29,6 +29,7 @@ func TestPrefix(t *testing.T) {
 	}
 }
 
+/*
 func TestClosest(t *testing.T) {
 	data, err := LoadData("../data/bright.tsv")
 	if err != nil {
@@ -36,14 +37,14 @@ func TestClosest(t *testing.T) {
 	}
 	//p := geom.NewPoint2D(14.579589, 25.817871)
 	p := geom.NewPoint2D(14.7249, 26.5155)
-	res := data.FindClosest(p)
+	res := FindClosest(p)
 	if res == nil || res.GeoHash != "ehdyym3b" {
 		t.Errorf("no point found")
 	} else if res.GeoHash != "ehdyym3b" {
 		p, _ = geom.UnHash(res.GeoHash, geom.STELLAR)
 		t.Errorf("Expected , got %v", p)
 	}
-}
+}*/
 
 func TestFilter(t *testing.T) {
 	lower := geom.NewPoint2D(24, -90)
@@ -127,4 +128,12 @@ func writeImg(t *testing.T, img draw.Image, fname string) {
 	if err = png.Encode(f, img); err != nil {
 		t.Errorf("encode %v", err)
 	}
+}
+
+func TestReadString(t *testing.T) {
+	seqs, err := readStringsWktFile("../data/consts/Orion-strings.wkt")
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+	t.Errorf("%v", seqs)
 }

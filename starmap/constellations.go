@@ -19,6 +19,7 @@ const (
 	wkt_start = iota
 	wkt_outer = iota
 	wkt_coord = iota
+	wkt_end   = iota
 )
 
 /* nested json polygon config struct */
@@ -29,11 +30,18 @@ type PolyInfo struct {
 	Geom       *geom.Polygon
 }
 
+type StringInfo struct {
+	Name    string
+	WktFile string
+	Lines   []*geom.CoordinateSeq
+}
+
 /* top level json constellation config */
 type Constellation struct {
-	Name      string
-	Family    string
-	PolyInfos []*PolyInfo
+	Name        string
+	Family      string
+	PolyInfos   []*PolyInfo
+	StringInfos []*StringInfo
 }
 
 type Constellations []*Constellation
@@ -64,6 +72,16 @@ func LoadConstellations(constDir string) (Constellations, error) {
 				}
 				constel.PolyInfos[i].Geom = poly
 			}
+			for i := range constel.StringInfos {
+				wktFile := constel.StringInfos[i].WktFile
+				fullWktPath := path.Join(constDir, wktFile)
+				lines, err := readStringsWktFile(fullWktPath)
+				if err != nil {
+					return nil, fmt.Errorf("Unable to parse %v: %v",
+						fullWktPath, err)
+				}
+				constel.StringInfos[i].Lines = lines
+			}
 			rval = append(rval, constel)
 		}
 	}
@@ -82,24 +100,39 @@ func readJsonFile(path string) (*Constellation, error) {
 	return &rval, err
 }
 
-/* parse constellation polygon well known text file */
-func readWktFile(path string) (*geom.Polygon, error) {
+func readStringsWktFile(path string) ([]*geom.CoordinateSeq, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
 	state := wkt_start
+	reader := bufio.NewReader(f)
+	rval := make([]*geom.CoordinateSeq, 0, 8)
+	for state != wkt_end {
+		coords, dims, newstate, err := readString(reader, state)
+		state = newstate
+		if err != nil {
+			return nil, fmt.Errorf("Problem reading %v: %v", path, err)
+		}
+		seq := &geom.CoordinateSeq{coords, dims}
+		rval = append(rval, seq)
+	}
+	return rval, nil
+}
+
+func readString(reader *bufio.Reader, state int) ([]float64, int, int, error) {
 	var b bytes.Buffer
 	coordStrs := make([]string, 0, 16)
-	reader := bufio.NewReader(f)
-	for {
+	done := false
+	for !done {
 		r, _, err := reader.ReadRune()
 		if err != nil {
 			if err == io.EOF {
+				state = wkt_end
 				break
 			} else {
-				return nil, err
+				return nil, 0, state, err
 			}
 		}
 		switch state {
@@ -111,7 +144,8 @@ func readWktFile(path string) (*geom.Polygon, error) {
 			if r == '(' {
 				state = wkt_coord
 			} else if r == ')' {
-				/* inner holes not supported */
+				state = wkt_end
+				done = true
 				break
 			}
 		case wkt_coord:
@@ -119,7 +153,11 @@ func readWktFile(path string) (*geom.Polygon, error) {
 				coordStrs = append(coordStrs, b.String())
 				b.Reset()
 			} else if r == ')' {
+				coordStrs = append(coordStrs, b.String())
+				b.Reset()
 				state = wkt_outer
+				done = true
+				break
 			} else {
 				b.WriteRune(r)
 			}
@@ -136,7 +174,7 @@ func readWktFile(path string) (*geom.Polygon, error) {
 			}
 			c, err := strconv.ParseFloat(floatStr, 64)
 			if err != nil {
-				return nil, err
+				return nil, 0, state, err
 			}
 			dims += 1
 			coords = append(coords, c)
@@ -144,8 +182,25 @@ func readWktFile(path string) (*geom.Polygon, error) {
 		if prevDims < 0 {
 			prevDims = dims
 		} else if prevDims != dims {
-			return nil, fmt.Errorf("mismatched dimensions in file: %v", path)
+			err := fmt.Errorf("mismatched dimensions in file")
+			return nil, 0, state, err
 		}
 	}
-	return geom.NewPoly(prevDims, coords...)
+	return coords, prevDims, state, nil
+}
+
+/* parse constellation polygon well known text file */
+func readWktFile(path string) (*geom.Polygon, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	state := wkt_start
+	reader := bufio.NewReader(f)
+	coords, dims, _, err := readString(reader, state)
+	if err != nil {
+		return nil, fmt.Errorf("Error reading file %v: %v", path, err)
+	}
+	return geom.NewPoly(dims, coords...)
 }

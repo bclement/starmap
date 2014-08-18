@@ -1,9 +1,35 @@
 package geom
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 )
+
+const (
+	bbox_upleft    = 0
+	bbox_up        = 1
+	bbox_upright   = 2
+	bbox_left      = 3
+	bbox_in        = 4
+	bbox_right     = 5
+	bbox_downleft  = 6
+	bbox_down      = 7
+	bbox_downright = 8
+	bbox_no_val    = 9
+)
+
+var crossArray = [][]bool{
+	{false, false, false, false, true, true, false, true, true, false},
+	{false, false, false, true, true, true, true, true, true, false},
+	{false, false, false, true, true, false, true, true, false, false},
+	{false, true, true, false, true, true, false, true, true, false},
+	{true, true, true, true, true, true, true, true, true, false},
+	{true, true, false, true, true, false, true, true, false, false},
+	{false, true, true, false, true, true, false, false, false, false},
+	{true, true, true, true, true, true, false, false, false, false},
+	{true, true, false, true, true, false, false, false, false, false},
+}
 
 /* generic coordinate storage */
 type CoordinateSeq struct {
@@ -20,6 +46,16 @@ func (cs *CoordinateSeq) Len() int {
 func (cs *CoordinateSeq) Get(index int) []float64 {
 	start := index * cs.Dims
 	return cs.Coords[start : start+cs.Dims]
+}
+
+func (cs *CoordinateSeq) String() string {
+	bs := bytes.NewBufferString("")
+	length := cs.Len()
+	for i := 0; i < length; i += 1 {
+		c := cs.Get(i)
+		bs.WriteString(fmt.Sprintf("%v ", c))
+	}
+	return bs.String()
 }
 
 /* interface for interacting with coordinate based geometries */
@@ -285,6 +321,10 @@ func (bb *BoundingBox) Touches(g Geometry) bool {
 	return checkAny(bb, g, gte)
 }
 
+func (bb *BoundingBox) TouchesSeq(cs *CoordinateSeq) bool {
+	return checkAnySeq(bb, cs, gte)
+}
+
 /*
 takes in bounds, geometry and a comparison function
 return true if bounds has enough dimensions to cover geometry and
@@ -313,21 +353,18 @@ func checkAll(bb *BoundingBox, g Geometry,
 	return true
 }
 
-/*
-takes in bounds, geometry and a comparison function
-return true if bounds has enough dimensions to cover geometry and
-any geometry coordinates return true for comp(coord, min) and
-true for comp(max, coord) for bounds min and max
-*/
-func checkAny(bb *BoundingBox, g Geometry,
+func checkAnySeq(bb *BoundingBox, cs *CoordinateSeq,
 	comp func(float64, float64) bool) bool {
+
 	bbdims := len(bb.min)
-	gdims := g.Dims()
-	gc := g.Coords()
-	size := gc.Len()
+	gdims := cs.Dims
+	if bbdims >= 2 && gdims == 2 {
+		return checkAny2DSeq(bb, cs, comp)
+	}
+	size := cs.Len()
 	if gdims <= bbdims {
 		for i := 0; i < size; i += 1 {
-			coord := gc.Get(i)
+			coord := cs.Get(i)
 			passes := true
 			for d := 0; d < bbdims && d < gdims; d += 1 {
 				if !comp(coord[d], bb.min[d]) {
@@ -345,6 +382,55 @@ func checkAny(bb *BoundingBox, g Geometry,
 		}
 	}
 	return false
+}
+
+func checkAny2DSeq(bb *BoundingBox, cs *CoordinateSeq,
+	comp func(float64, float64) bool) bool {
+
+	size := cs.Len()
+	prev := bbox_no_val
+	for i := 0; i < size; i += 1 {
+		coord := cs.Get(i)
+		right := comp(coord[0], bb.max[0])
+		left := comp(bb.min[0], coord[0])
+		up := comp(coord[1], bb.max[1])
+		down := comp(bb.min[1], coord[1])
+		curr := bbox_in
+		if up {
+			if left {
+				curr = bbox_upleft
+			} else if right {
+				curr = bbox_upright
+			} else {
+				curr = bbox_up
+			}
+		} else if down {
+			if left {
+				curr = bbox_downleft
+			} else if right {
+				curr = bbox_downright
+			} else {
+				curr = bbox_down
+			}
+		}
+		if curr == bbox_in || crossArray[curr][prev] {
+			return true
+		}
+		prev = curr
+	}
+	return false
+}
+
+/*
+takes in bounds, geometry and a comparison function
+return true if bounds has enough dimensions to cover geometry and
+any geometry coordinates return true for comp(coord, min) and
+true for comp(max, coord) for bounds min and max
+*/
+func checkAny(bb *BoundingBox, g Geometry,
+	comp func(float64, float64) bool) bool {
+
+	return checkAnySeq(bb, g.Coords(), comp)
 }
 
 /* return true if a and b are the same size and have the same elements */

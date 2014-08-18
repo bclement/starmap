@@ -66,6 +66,8 @@ func createTile(w http.ResponseWriter, req *Req) ([]byte, error) {
 	layer := strings.ToLower(req.Layer)
 	if layer == "constellations" {
 		return createConstTile(w, req)
+	} else if layer == "asterisms" {
+		return createAsterTile(w, req)
 	} else {
 		return createStarTile(w, req)
 	}
@@ -94,6 +96,30 @@ func createConstTile(w http.ResponseWriter, req *Req) ([]byte, error) {
 					labelPoint := pi.LabelPoint
 					pix := trans.TransformXY(labelPoint[0], labelPoint[1])
 					render.RenderString(img, chars, 10, pix, c.Name, txtColor)
+				}
+			}
+		}
+	}
+	var rval bytes.Buffer
+	if err := png.Encode(&rval, img); err != nil {
+		return nil, err
+	}
+	return rval.Bytes(), nil
+}
+
+func createAsterTile(w http.ResponseWriter, req *Req) ([]byte, error) {
+	if constelErr != nil {
+		return nil, constelErr
+	}
+	s := style.NewPolyStyle(1, color.White)
+	trans := req.Trans(geom.STELLAR)
+	img := render.CreateTransparent(req.Width, req.Height)
+	bbox := req.BBox()
+	for _, c := range constelData {
+		for _, si := range c.StringInfos {
+			for _, cs := range si.Lines {
+				if bbox.TouchesSeq(cs) {
+					render.RenderSeq(img, cs, trans, s)
 				}
 			}
 		}

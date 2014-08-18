@@ -96,11 +96,11 @@ func CreateTransparent(width, height int) draw.Image {
 takes in point to render onto image using style
 */
 func Render(img draw.Image, p *image.Point, pstyle *style.PointStyle) {
-    /* single pixel optimization */
-    if pstyle.Style.Size <= 0.5 {
-	    img.Set(p.X, p.Y, pstyle.Color)
-        return
-    }
+	/* single pixel optimization */
+	if pstyle.Style.Size <= 0.5 {
+		img.Set(p.X, p.Y, pstyle.Color)
+		return
+	}
 	var mask image.Image
 	/* TODO don't create new mask every time */
 	if pstyle.Shape == style.CIRCLE {
@@ -193,22 +193,25 @@ func RenderLine(img draw.Image, p0, p1 *image.Point, s *style.PolygonStyle) {
 	}
 }
 
-/* draw all line segments in polygon on img */
-func RenderPoly(img draw.Image, p *geom.Polygon, t *geom.PointTransform,
+func RenderSeq(img draw.Image, coords *geom.CoordinateSeq, t *geom.PointTransform,
 	s *style.PolygonStyle) {
-	coords := p.Coords()
 	polyLen := coords.Len()
 	if polyLen < 2 {
 		return
 	}
-	first := t.TransformCoord(coords.Get(0))
-	prev := first
+	prev := t.TransformCoord(coords.Get(0))
 	for i := 1; i < polyLen; i += 1 {
 		curr := t.TransformCoord(coords.Get(i))
 		RenderLine(img, prev, curr, s)
 		prev = curr
 	}
-	RenderLine(img, prev, first, s)
+}
+
+/* draw all line segments in polygon on img */
+func RenderPoly(img draw.Image, p *geom.Polygon, t *geom.PointTransform,
+	s *style.PolygonStyle) {
+
+	RenderSeq(img, p.Coords(), t, s)
 }
 
 /* draw string s on image at point p in color c.

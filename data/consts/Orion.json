@@ -2,13 +2,19 @@
     "PolyInfos": [
         {
             "LabelPoint": [
-                6.19, 
-                11.47
+                5.42, 
+                14.85
             ], 
             "WktFile": "Orion.wkt", 
             "MaxScale": 0.012
         }
     ], 
     "Name": "Orion", 
-    "Family": "Orion"
+    "Family": "Orion",
+    "StringInfos": [
+        {
+            "Name": "Orion",
+            "WktFile": "Orion-strings.wkt"
+        }
+    ]
 }
