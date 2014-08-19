@@ -166,7 +166,7 @@ func readString(reader *bufio.Reader, state int) ([]float64, int, int, error) {
 	coords := make([]float64, 0, len(coordStrs)*2)
 	prevDims := -1
 	for _, coordStr := range coordStrs {
-		floats := strings.Split(coordStr, " ")
+		floats := strings.Fields(coordStr)
 		dims := 0
 		for _, floatStr := range floats {
 			if len(floatStr) < 1 {
