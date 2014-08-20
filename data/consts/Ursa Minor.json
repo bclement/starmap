@@ -2,13 +2,19 @@
     "PolyInfos": [
         {
             "LabelPoint": [
-                17.13, 
-                85.29
+                16.629, 
+                86.928
             ], 
             "WktFile": "Ursa Minor.wkt", 
             "MaxScale": 0.012
         }
     ], 
     "Name": "Ursa Minor", 
-    "Family": "Ursa Major"
+    "Family": "Ursa Major",
+    "StringInfos": [
+        {
+            "Name": "Little Dipper",
+            "WktFile": "Little-dipper-strings.wkt"
+        }
+    ]
 }
