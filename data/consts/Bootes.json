@@ -10,5 +10,11 @@
         }
     ], 
     "Name": "Bootes", 
-    "Family": "Ursa Major"
+    "Family": "Ursa Major",
+    "StringInfos": [
+        {
+            "Name": "Plowman",
+            "WktFile": "Bootes-strings.wkt"
+        }
+    ]
 }

@@ -10,5 +10,11 @@
         }
     ], 
     "Name": "Virgo", 
-    "Family": "Zodiac"
+    "Family": "Zodiac",
+    "StringInfos": [
+        {
+            "Name": "Virgo",
+            "WktFile": "Virgo-strings.wkt"
+        }
+    ]
 }
