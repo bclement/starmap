@@ -10,5 +10,11 @@
         }
     ], 
     "Name": "Lepus", 
-    "Family": "Orion"
+    "Family": "Orion",
+    "StringInfos": [
+        {
+            "Name": "Hare",
+            "WktFile": "Lepus-strings.wkt"
+        }
+    ]
 }

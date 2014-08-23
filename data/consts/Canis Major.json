@@ -10,5 +10,11 @@
         }
     ], 
     "Name": "Canis Major", 
-    "Family": "Orion"
+    "Family": "Orion",
+    "StringInfos": [
+        {
+            "Name": "Dog",
+            "WktFile": "Dog-strings.wkt"
+        }
+    ]
 }

@@ -2,13 +2,19 @@
     "PolyInfos": [
         {
             "LabelPoint": [
-                15.76, 
-                -43.29
+                16.061, 
+                -30.762
             ], 
             "WktFile": "Lupus.wkt", 
             "MaxScale": 0.012
         }
     ], 
     "Name": "Lupus", 
-    "Family": "Hercules"
+    "Family": "Hercules",
+    "StringInfos": [
+        {
+            "Name": "Wolf",
+            "WktFile": "Lupus-strings.wkt"
+        }
+    ]
 }

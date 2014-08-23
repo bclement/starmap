@@ -10,5 +10,11 @@
         }
     ], 
     "Name": "Sagittarius", 
-    "Family": "Zodiac"
+    "Family": "Zodiac",
+    "StringInfos": [
+        {
+            "Name": "Teapot",
+            "WktFile": "Teapot-strings.wkt"
+        }
+    ]
 }

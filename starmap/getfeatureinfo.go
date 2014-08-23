@@ -63,14 +63,17 @@ func getfeatureinfo(w http.ResponseWriter, r *http.Request) {
 	coord := trans.Reverse(&image.Point{i, j})
 	layers := strings.Split(req.Layer, ",")
 	features := make([]*Feature, 0, 3)
+    asters := false
 	for _, layer := range layers {
 		if layer == "stars" {
 			sf := starFeatures(req, coord)
 			features = append(features, sf...)
 		} else if layer == "constellations" {
-			cf := constelFeatures(coord)
+			cf := constelFeatures(coord, asters)
 			features = append(features, cf...)
-		}
+		} else if layer == "asterisms" {
+            asters = true
+        }
 	}
 	if len(features) > 0 {
 		err := featureTemplate.Execute(w, features)
@@ -95,13 +98,19 @@ func starFeatures(req *Req, point *geom.Point) []*Feature {
 }
 
 /* get contellation layer feature info for point */
-func constelFeatures(point *geom.Point) []*Feature {
+func constelFeatures(point *geom.Point, asters bool) []*Feature {
 	rval := make([]*Feature, 0, 2)
 	for _, c := range constelData {
 		for _, pi := range c.PolyInfos {
 			if pi.Geom.Contains(point) {
-				rval = append(rval, &Feature{"constellation",
-					constAsParams(c)})
+                params := constAsParams(c)
+                if asters {
+                    for _, si := range c.StringInfos {
+                        params = addParam(params, "asterism", si.Name)
+                    }
+                }
+                f := &Feature{"constellation", params}
+				rval = append(rval, f)
 			}
 		}
 	}
