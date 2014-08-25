@@ -10,5 +10,11 @@
         }
     ], 
     "Name": "Cygnus", 
-    "Family": "Hercules"
+    "Family": "Hercules",
+    "StringInfos": [
+        {
+            "Name": "Northern Cross",
+            "WktFile": "Cygnus-strings.wkt"
+        }
+    ]
 }

@@ -33,7 +33,7 @@ func constAsParams(constel *Constellation) []Param {
 /* takes in a star and converts it to a parameter slice */
 func asParams(star *Star) []Param {
 	rval := make([]Param, 0, 6)
-	rval = addParam(rval, "hipparchose #", fmt.Sprintf("%v", star.HipNum))
+	rval = addParam(rval, "hipparcos #", fmt.Sprintf("%v", star.HipNum))
 	rval = addParam(rval, "name", star.Name)
 	rval = addParam(rval, "magnitude", fmt.Sprintf("%v", star.Magnitude))
 	coord, err := geom.UnHash(star.GeoHash, geom.STELLAR)

@@ -10,5 +10,11 @@
         }
     ], 
     "Name": "Hercules", 
-    "Family": "Hercules"
+    "Family": "Hercules",
+    "StringInfos": [
+        {
+            "Name": "Kneeling Man",
+            "WktFile": "Hercules-strings.wkt"
+        }
+    ]
 }
